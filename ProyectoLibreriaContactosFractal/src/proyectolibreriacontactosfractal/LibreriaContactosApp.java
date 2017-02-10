@@ -7,7 +7,7 @@ package proyectolibreriacontactosfractal;
 
 /**
  *
- * @author PedroRaul
+ * @author Pedro Raul
  */
 public class LibreriaContactosApp {
 
