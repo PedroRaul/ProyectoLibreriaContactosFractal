@@ -7,7 +7,7 @@ package proyectolibreriacontactosfractal;
 
 /**
  *
- * @author LT
+ * @author PedroRaul
  */
 public class LibreriaContactosApp {
 
@@ -16,6 +16,7 @@ public class LibreriaContactosApp {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        System.out.println("Hola");
     }
     
 }
