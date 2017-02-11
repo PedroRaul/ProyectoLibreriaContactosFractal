@@ -1,4 +1,3 @@
-//https://github.com/PedroRaul/ProyectoLibreriaContactosFractal.git
 package proyectolibreriacontactosfractal;
 
 
