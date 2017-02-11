@@ -5,8 +5,7 @@
  */
 package proyectolibreriacontactosfractal;
 
-import java.sql.Connection;
-
+import java.sql.*;
 /**
  *
  * @author naat
@@ -21,11 +20,29 @@ public class conexion {
     Connection conn = null;
     
     public conexion(){
+        try{
+        Class.forName("com.mysql.jdbc.Driver");
+        conn = DriverManager.getConnection(url,login,password);
+        
+        if(conn != null){
+            System.out.println("conexion segura"+bd+"ok");
+        }
         
     }
-    
-    
-    
+        catch(SQLException e){
+            System.out.println(e);
+    }catch(ClassNotFoundException e){
+            System.out.println(e);
+    }catch(Exception e){
+            System.out.println(e);
+    }
+    }
+    public Connection getConnection(){
+        return conn;
+    }
+    public void desconectar(){
+        conn = null;
+    }
     
     
     
