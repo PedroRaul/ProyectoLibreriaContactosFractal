@@ -1,7 +1,7 @@
 package proyectolibreriacontactosfractal;
 
 
-public class Estudiante extends Individuo 
+public class Estudiante extends Contacto 
 
 {
 

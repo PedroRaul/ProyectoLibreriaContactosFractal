@@ -1,6 +1,6 @@
 package proyectolibreriacontactosfractal;
 
-public class Individuo
+public class Contacto
 {
 	protected static String nombre="";
 	protected static String apellidopaterno="";
@@ -10,13 +10,13 @@ public class Individuo
 	protected static String email="";
 
 
-	public Individuo()
+	public Contacto()
 	
 	{
 
 	}
 
-	public Individuo(String nombre,String apellidopaterno, String apellidomaterno,String telefonocasa,
+	public Contacto(String nombre,String apellidopaterno, String apellidomaterno,String telefonocasa,
 		String telefonocelular,String email)
 	
 	{
@@ -55,6 +55,11 @@ public class Individuo
 	public void setTelefonoCelular (String telefonocelular)
 	{
 		this.telefonocelular=telefonocelular;
+	}
+        
+        public void setEmail (String email)
+	{
+		this.email=email;
 	}
 
 	public String getNombre()

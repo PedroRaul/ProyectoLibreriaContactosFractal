@@ -1,6 +1,6 @@
 package proyectolibreriacontactosfractal;
 
-public class Doctor extends Individuo{
+public class Doctor extends Contacto{
 	
 	protected static String fechanacimiento="";
 	protected static String especialidad="";

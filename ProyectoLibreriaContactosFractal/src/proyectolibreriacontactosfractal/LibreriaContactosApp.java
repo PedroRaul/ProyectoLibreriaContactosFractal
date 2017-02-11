@@ -1,24 +1,102 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 //https://github.com/PedroRaul/ProyectoLibreriaContactosFractal.git
 package proyectolibreriacontactosfractal;
 
+
 /**
- *
- * @author Pedro Raul
- */
+     * Classe que ejecuta la Aplicacion
+     */
+    
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 public class LibreriaContactosApp {
 
-    /**
-     * @param args the command line arguments
-     */
+    
+    //Almacena el valor entero capturado por el usuario
+    private static int valoropcionmenuinteger;
+    
+    //Almacena una cadena de caracteres capturada por el usuario
+    private static String valoropcionmenustring;
+    
+    //Arraylist de tipo Contacto que alacenara tdos los contactos de ls libreria 
+    public static ArrayList <Contacto> contactoArrayList=new ArrayList<Contacto>();
+    
+    
     public static void main(String[] args) {
-        // TODO code application logic here
-        System.out.println("Holiiiii");
+        
+        mostrarMenuPrincipal();
+        
+       
     }
     
+    
+
+
+// muestra el menu principal de la aplicacion
+    private static void mostrarMenuPrincipal() {
+        valoropcionmenuinteger=Mensajes.mostrarDialogoCapturaInteger("Opciones (Ingresa Numero Correspondiente)"
+        +"\n"+"1.- Buscar Contacto "+"\n"+"2.- Agregar Contacto");
+        
+        if(valoropcionmenuinteger==1)
+            mostrarCapturaBuscarContacto();
+        else
+            mostrarCapturaTipoDeContacto();
+        
+    }
+    
+
+
+// muestra el un mensaje de entrada para capturar el nombre del contacto a buscar 
+    
+    private static void mostrarCapturaBuscarContacto() {
+        
+        valoropcionmenustring=Mensajes.mostrarDialogoCapturaString("Ingresa el nombre del contacto a buscar");
+        BusquedaDatos.buscarContacto(valoropcionmenustring);
+        mostrarMenuPrincipal();
+    
+    }
+    
+    
+
+    private static void mostrarCapturaTipoDeContacto() {
+        
+        valoropcionmenustring=Mensajes.mostrarDialogoCapturaString("Ingresa el tipo de contacto");
+            evaluarTipoDeContacto();
+    }
+    
+    private static void evaluarTipoDeContacto(){
+        
+        switch(valoropcionmenustring)
+        {
+            case"deportista":
+                CapturarDatos.capturarDatosDeportista();
+                mostrarMenuPrincipal();
+            break;
+            case"doctor":
+                CapturarDatos.capturarDatosDoctor();
+                mostrarMenuPrincipal();
+            
+            break;
+            case"estudiante":
+                CapturarDatos.capturarDatosEstudiante();
+                mostrarMenuPrincipal();
+            break;
+            case"licenciado":
+                CapturarDatos.capturarDatosLicenciado();
+                mostrarMenuPrincipal();
+            break;
+            case"persona":
+                CapturarDatos.capturarDatosPersona();
+                mostrarMenuPrincipal();
+            break;
+        }
+    
+    
+    }
+    
+   
 }
+    
+
+
+

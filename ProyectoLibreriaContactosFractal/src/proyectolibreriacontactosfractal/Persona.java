@@ -3,7 +3,7 @@ package proyectolibreriacontactosfractal;
 
 
 
-public class Persona extends Individuo{
+public class Persona extends Contacto{
 	
 	protected static String domicilio="";
 	protected static String contactopreferido="";

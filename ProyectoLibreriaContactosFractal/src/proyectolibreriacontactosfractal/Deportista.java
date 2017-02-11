@@ -1,6 +1,6 @@
 package proyectolibreriacontactosfractal;
 
-public class Deportista extends Individuo 
+public class Deportista extends Contacto 
 {
 	private static String genero="";
 	private static String fechanacimiento="";
