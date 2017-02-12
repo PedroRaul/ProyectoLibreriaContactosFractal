@@ -72,7 +72,7 @@ public class Contacto
 	public String getApellidoPaterno()
 	
 	{
-		return this.apellidomaterno;
+		return this.apellidopaterno;
 	}
 
 	public String getApellidoMaterno()

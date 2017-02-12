@@ -11,7 +11,7 @@ package proyectolibreriacontactosfractal;
 
 
 /**
-     * Classe que ejecuta la Aplicacion
+     * Clase que ejecuta la Aplicacion
      */
     
 import java.util.ArrayList;
@@ -25,13 +25,15 @@ public class LibreriaContactosApp {
     //Almacena una cadena de caracteres capturada por el usuario
     private static String valoropcionmenustring;
     
-    //Arraylist de tipo Contacto que alacenara tdos los contactos de ls libreria 
-    public static ArrayList <Contacto> contactoArrayList=new ArrayList<Contacto>();
+    
     
     
     public static void main(String[] args) {
         
+        
         mostrarMenuPrincipal();
+        
+        
         
        
     }

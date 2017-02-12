@@ -12,20 +12,27 @@ import java.sql.*;
  */
 public class conexion {
     
-    static String bd = "agenda";
-    protected String login="root";
-    protected String password="";
-    static String url = "jdbc:mysql://localhost/"+bd; 
+    protected final static String nombrebasededatos = "datos";
+    protected final String usuario="root";
+    protected final String contraseña="";
+    static final String url = "jdbc:mysql://localhost/"+nombrebasededatos; 
     
-    Connection conn = null;
+    Connection conexion = null;
     
     public conexion(){
-        try{
+       
+    }
+    public Connection getConnection(){
+        return conexion;
+    }
+    
+    public void conectar(){
+     try{
         Class.forName("com.mysql.jdbc.Driver");
-        conn = DriverManager.getConnection(url,login,password);
+        conexion = DriverManager.getConnection(url,usuario,contraseña);
         
-        if(conn != null){
-            System.out.println("conexion segura"+bd+"ok");
+        if(conexion != null){
+            System.out.println("conexion segura "+nombrebasededatos+" ok");
         }
         
     }
@@ -37,11 +44,8 @@ public class conexion {
             System.out.println(e);
     }
     }
-    public Connection getConnection(){
-        return conn;
-    }
     public void desconectar(){
-        conn = null;
+        conexion = null;
     }
     
     
