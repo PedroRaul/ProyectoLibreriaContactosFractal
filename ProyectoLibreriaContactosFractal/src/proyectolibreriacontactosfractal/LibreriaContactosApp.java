@@ -25,8 +25,8 @@ public class LibreriaContactosApp {
     
     public static void main(String[] args) {
         
-        
-        mostrarMenuPrincipal();
+        //System.out.print(ContactosABC.verIdMaximo("deportista"));
+       mostrarMenuPrincipal();
         
         
         
