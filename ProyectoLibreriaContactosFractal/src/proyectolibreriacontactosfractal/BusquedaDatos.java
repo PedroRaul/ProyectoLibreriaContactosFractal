@@ -2,13 +2,42 @@
 package proyectolibreriacontactosfractal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 public class BusquedaDatos {
     
+    private static Contacto contacto;
     public static conexion conexion;
+    
+    public static void buscarContacto(String tipo, String contacto)
+    {
+        conexion=new conexion();
+        conexion.conectar();
+        try{
+            Statement estatuto = conexion.getConnection().createStatement();
+            String SQL = "select * from %1$s where Nombre like '%2$s'";
+            ResultSet r = estatuto.executeQuery( String.format(SQL, tipo, contacto) );
+            if(r.next()){
+                ResultSetMetaData md = r.getMetaData();
+                String all = "";
+                for(int i=1;i<= md.getColumnCount();i++){
+                    String key = md.getColumnLabel(i);
+                    String val = r.getString(key);
+                    all += String.format("%1$s : %2$s \n", key, val);
+                }
+                Mensajes.mostrarDialogo(all);
+            }
+            estatuto.close();
+            conexion.desconectar();
+			
+	} catch (SQLException e) {
+            System.out.println(e.getMessage());
+            Mensajes.mostrarDialogo("Error en el registro intente de nuevo");
+        }
+    }
     
     public static void buscarDeportista(String contacto)
     {
