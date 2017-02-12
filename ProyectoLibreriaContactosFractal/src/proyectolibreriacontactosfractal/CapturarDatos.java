@@ -6,6 +6,7 @@ public class CapturarDatos {
    public static Contacto contacto;
    public static String querycontactos;
    public static String querymediodecontactos;
+   private static int idMaximo=0;
     
     private static void capturaDatosContacto(String tipoContacto)
             
@@ -57,7 +58,12 @@ public class CapturarDatos {
                 +"','"+((Deportista)contacto).getFechaNacimiento()+"','"
                 +((Deportista)contacto).getDeporte()+"','"+ContactosABC.tabladeportista+"')";
         
+        idMaximo=ContactosABC.verIdMaximo(ContactosABC.tabladeportista)+1;
+        querymediodecontactos="INSERT INTO contacto(`"+ContactosABC.campoidpersona+"`, `"+ContactosABC.campoprofesion+"`, `"+ContactosABC.campocontactos+"`) VALUES ("+idMaximo+",'"+ContactosABC.tabladeportista+"','"+contacto.getEmail()+"')";
+       
         ContactosABC.guardarDatosContacto(querycontactos);
+        ContactosABC.guardarDatosContacto(querymediodecontactos);
+        
         
      }
 
@@ -79,7 +85,11 @@ public class CapturarDatos {
                 +"','"+((Doctor)contacto).getEspecialidad()+"','"+((Doctor)contacto).getNombreHospital()
                 +"','"+((Doctor)contacto).getDireccionHospital()+"','"+ContactosABC.tabladoctor+"')";
         
+        idMaximo=ContactosABC.verIdMaximo(ContactosABC.tabladoctor)+1;
+        querymediodecontactos="INSERT INTO contacto(`"+ContactosABC.campoidpersona+"`, `"+ContactosABC.campoprofesion+"`, `"+ContactosABC.campocontactos+"`) VALUES ("+idMaximo+",'"+ContactosABC.tabladoctor+"','"+contacto.getEmail()+"')";
+       
         ContactosABC.guardarDatosContacto(querycontactos);
+        ContactosABC.guardarDatosContacto(querymediodecontactos);
         }
 
     public static void capturarDatosEstudiante() {
@@ -99,7 +109,11 @@ public class CapturarDatos {
                 +"','"+((Estudiante)contacto).getFechaNacimiento()+"','"
                 +((Estudiante)contacto).getEstudiaCarrera()+"','"+ContactosABC.tablaestudiante+"')";
         
+        idMaximo=ContactosABC.verIdMaximo(ContactosABC.tablaestudiante)+1;
+        querymediodecontactos="INSERT INTO contacto(`"+ContactosABC.campoidpersona+"`, `"+ContactosABC.campoprofesion+"`, `"+ContactosABC.campocontactos+"`) VALUES ("+idMaximo+",'"+ContactosABC.tablaestudiante+"','"+contacto.getEmail()+"')";
+       
         ContactosABC.guardarDatosContacto(querycontactos);
+        ContactosABC.guardarDatosContacto(querymediodecontactos);
         
        }
 
@@ -120,7 +134,11 @@ public class CapturarDatos {
                 +"','"+((Licenciado)contacto).getHorarioAtencionInicio()+"','"
                 +((Licenciado)contacto).getHorarioAtencionFin()+"','"+ContactosABC.tablalicenciado+"')";
         
+        idMaximo=ContactosABC.verIdMaximo(ContactosABC.tablalicenciado)+1;
+        querymediodecontactos="INSERT INTO contacto(`"+ContactosABC.campoidpersona+"`, `"+ContactosABC.campoprofesion+"`, `"+ContactosABC.campocontactos+"`) VALUES ("+idMaximo+",'"+ContactosABC.tablalicenciado+"','"+contacto.getEmail()+"')";
+       
         ContactosABC.guardarDatosContacto(querycontactos);
+        ContactosABC.guardarDatosContacto(querymediodecontactos);
          }
 
     public static void capturarDatosPersona() {
@@ -140,7 +158,11 @@ public class CapturarDatos {
                 +"','"+((Persona)contacto).getContactoPreferido()+"','"
                 +((Persona)contacto).getOcupacion()+"','"+ContactosABC.tablapersona+"')";
         
+       idMaximo=ContactosABC.verIdMaximo(ContactosABC.tablapersona)+1;
+        querymediodecontactos="INSERT INTO contacto(`"+ContactosABC.campoidpersona+"`, `"+ContactosABC.campoprofesion+"`, `"+ContactosABC.campocontactos+"`) VALUES ("+idMaximo+",'"+ContactosABC.tablapersona+"','"+contacto.getEmail()+"')";
+       
         ContactosABC.guardarDatosContacto(querycontactos);
+        ContactosABC.guardarDatosContacto(querymediodecontactos);
         
     }
     

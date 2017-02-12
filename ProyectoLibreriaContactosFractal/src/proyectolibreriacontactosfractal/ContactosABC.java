@@ -43,7 +43,10 @@ public class ContactosABC {
     public static final String campodireccionhospital="DireccionH";
     public static final String campolugardenacimiento="LugarNac";
     public static final String campocarrera="Carrera";
-    private static int idMaximo=0;
+    public static final String campoidpersona="idPersona";
+    public static String campocontactos="Contactos";
+    
+    
     
     public static void guardarDatosContacto(String query){
         
@@ -78,15 +81,10 @@ public class ContactosABC {
         try{
             PreparedStatement consulta;
             consulta = conexion.getConnection().prepareStatement
-            ("SELECT * From ? ");
-            
-            consulta.setString(1, tabla);
+            ("SELECT * From "+tabla+" ");
             ResultSet res= consulta.executeQuery();;
-            
-            if(res.next() ) {
+            if(res.next() ) 
             res.last();
-            //o resultados.afterLast(); según lo que estés buscando
-                }
             resultado= Integer.parseInt(res.getString("IdPersona"));
            
             
