@@ -1,14 +1,11 @@
-
+//
 package proyectolibreriacontactosfractal;
 
 import java.sql.SQLException;
 import java.sql.Statement;
 
 
-/**
- *
- * @author LT
- */
+
 public class CapturarDatos {
     
     private static Contacto contacto;
