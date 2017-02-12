@@ -19,6 +19,8 @@ public class LibreriaContactosApp {
     
     //Almacena una cadena de caracteres capturada por el usuario
     private static String valoropcionmenustring;
+    private static String valorprofesionmenustring;
+    private static String nombre;
     
     
     
@@ -54,10 +56,28 @@ public class LibreriaContactosApp {
     
     private static void mostrarCapturaBuscarContacto() {
         
+        valorprofesionmenustring=Mensajes.mostrarDialogoCapturaString("INGRESA EL NUMERO CORRESPONDIENTE A LA PROFESION...\n\n1.Deportista\n2-Doctor\n3.Estudiante\n4.Licenciado\n5.Persona");
         valoropcionmenustring=Mensajes.mostrarDialogoCapturaString("Ingresa el nombre del contacto a buscar");
-        BusquedaDatos.buscarContacto(valoropcionmenustring);
+       
+        switch(valorprofesionmenustring)
+        {
+            case "1":
+                BusquedaDatos.buscarDeportista(valoropcionmenustring);
+            break;
+            case"2":
+                BusquedaDatos.buscarDoctor(valoropcionmenustring);
+            break;
+            case"3":
+                BusquedaDatos.buscarEstudiante(valoropcionmenustring);
+            break;
+            case"4":
+                BusquedaDatos.buscarLicenciado(valoropcionmenustring);
+            break;
+            case"5":
+                BusquedaDatos.buscarPersona(valoropcionmenustring);
+            break;
+        }
         mostrarMenuPrincipal();
-    
     }
     
     
