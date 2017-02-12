@@ -2,8 +2,7 @@ package proyectolibreriacontactosfractal;
 
 import java.sql.*;
 import javax.swing.JOptionPane;
-import static proyectolibreriacontactosfractal.CapturarDatos.capturarDatoContacto;
-import proyectolibreriacontactosfractal.conexion;
+
 public class Busqueda {
     
     public Contacto busquedaDeportista(String nombre,String apellidopaterno,String apellidomaterno){

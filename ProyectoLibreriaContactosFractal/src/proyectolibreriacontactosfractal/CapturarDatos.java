@@ -11,8 +11,8 @@ import java.sql.Statement;
  */
 public class CapturarDatos {
     
-    private static Contacto contacto=new Contacto();
-    private static conexion conexion =new conexion();
+    private static Contacto contacto;
+    private static conexion conexion;
     private static final String tabladeportista="deportista";
     private static final String tabladoctor="doctor";
     private static final String tablaestudiante="estudiante";
@@ -155,6 +155,7 @@ public class CapturarDatos {
     
     // Ejecuta el query para almacenar los 3 valores que son comunes en todas las tablas
     public static void guardarDatosGeneralesContacto(String nombretabla,String nombre,String apellidopaterno,String apellidomaterno){
+        conexion=new conexion();
         conexion.conectar();
         try{
             Statement estatuto = conexion.getConnection().createStatement();
@@ -171,14 +172,14 @@ public class CapturarDatos {
     
     public static void guardarDatosParticularesContacto(String nombretabla,String nombre,String campo1,String campo2,String campo3,String campo4,String valorcampo1,String valorcampo2,String valorcampo3,String valorcampo4){
         
-        
+        conexion=new conexion();
         if(nombretabla.equals(tabladoctor))
         {
          conexion.conectar();
         try{
             Statement estatuto = conexion.getConnection().createStatement();
             estatuto.executeUpdate("UPDATE `"+nombretabla+"` SET `"+campo1+"`='"+valorcampo1+"',`"+campo2+"`='"+valorcampo2+"',"
-                    + "`"+campo3+"`='"+valorcampo3+"'`"+campo4+"`='"+valorcampo4+"' WHERE Nombre='"+nombre+"'");
+                    + "`"+campo3+"`='"+valorcampo3+"',`"+campo4+"`='"+valorcampo4+"' WHERE Nombre='"+nombre+"'");
             Mensajes.mostrarDialogo("Se ha registrado Exitosamente");
             estatuto.close();
             conexion.desconectar();

@@ -3,6 +3,7 @@ package proyectolibreriacontactosfractal;
 
 public class Contacto
 {
+        //EL metodo de acceso a las variables es protegido para que sean accesibles solo para esta clase y las clases hijas
 	protected static String nombre="";
 	protected static String apellidopaterno="";
 	protected static String apellidomaterno="";

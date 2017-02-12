@@ -1,10 +1,5 @@
 package proyectolibreriacontactosfractal;
 
-
-import proyectolibreriacontactosfractal.LibreriaContactosApp;
-import proyectolibreriacontactosfractal.Mensajes;
-
-
 public class BusquedaDatos {
     
     public static void buscarContacto(String contacto)
