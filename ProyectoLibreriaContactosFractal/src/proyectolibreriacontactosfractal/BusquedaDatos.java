@@ -107,7 +107,6 @@ public class BusquedaDatos {
             PreparedStatement consulta;
             consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,FechaNac,Especialidad,NombreH,DireccionH from Doctor WHERE Nombre = '"+Nombre+"' and ApePa='"+AP+"' and ApeMa='"+AM+"'");
             ResultSet res = consulta.executeQuery();
-            if(res.next()==true){
             while(res.next()){
                 existe=true;
                 cont.setNombre(res.getString("Nombre"));
@@ -123,9 +122,7 @@ public class BusquedaDatos {
                     +"\nFecha de Nacimiento="+((Doctor)cont).getFechaNacimiento()+"\nEspecialidad="
                     +((Doctor)cont).getEspecialidad()+"\nNombre del Hospital="+((Doctor)cont).getNombreHospital()
                     +"\nDireccion del Hospital="+((Doctor)cont).getDireccionHospital()+"\n"+NR);
-            }else{
-                JOptionPane.showMessageDialog(null, "No Se encontro registro de "+Nombre+" "+AP+" "+AM);
-            }
+            
             consulta.close();
             res.close();
             conexion.desconectar();
@@ -148,7 +145,6 @@ public class BusquedaDatos {
             PreparedStatement consulta;
             consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,LugarNac,FechaNac,Carrera,Email from Estudiante WHERE Nombre = '"+Nombre+"' and ApePa='"+AP+"' and ApeMa='"+AM+"'");
             ResultSet res = consulta.executeQuery();
-            if(res.next()==true){
             while(res.next()){
                 existe=true;
                 cont.setNombre(res.getString("Nombre"));
@@ -164,9 +160,7 @@ public class BusquedaDatos {
                     +"\nLugar de Nacimiento="+((Estudiante)cont).getLugarNacimento()+"\nFecha de Nacimiento="
                     +((Estudiante)cont).getFechaNacimiento()+"\nCarrera="+((Estudiante)cont).getEstudiaCarrera()
                     +"\nEmail="+((Estudiante)cont).getEmail());
-            }else{
-                JOptionPane.showMessageDialog(null, "No Se encontro registro de "+Nombre+" "+AP+" "+AM);
-            }
+            
             consulta.close();
             res.close();
             conexion.desconectar();
@@ -189,7 +183,6 @@ public class BusquedaDatos {
             PreparedStatement consulta;
             consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,TelOficina,HorarioIn,HorarioFin from Licenciado WHERE Nombre = '"+Nombre+"' and ApePa='"+AP+"' and ApeMa='"+AM+"'");
             ResultSet res = consulta.executeQuery();
-            if(res.next()==true){
             while(res.next()){
                 existe=true;
                 cont.setNombre(res.getString("Nombre"));
@@ -203,9 +196,7 @@ public class BusquedaDatos {
                     +cont.getApellidoPaterno()+"\nApellidoMaterno="+cont.getApellidoMaterno()
                     +"\nTelefono de Oficina="+((Licenciado)cont).getTelefonoOficina()+"\nHorario de Atencion="
                     +((Licenciado)cont).getHorarioAtencionInicio()+" a "+((Licenciado)cont).getHorarioAtencionFin());
-            }else{
-                JOptionPane.showMessageDialog(null, "No Se encontro registro de "+Nombre+" "+AP+" "+AM);
-            }
+            
             consulta.close();
             res.close();
             conexion.desconectar();
@@ -228,7 +219,6 @@ public class BusquedaDatos {
             PreparedStatement consulta;
             consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,Domicilio,MedioPreferido,Ocupacion from Persona WHERE Nombre = '"+Nombre+"' and ApePa='"+AP+"' and ApeMa='"+AM+"'");
             ResultSet res = consulta.executeQuery();
-            if(res.next()==true){
             while(res.next()){
                 existe=true;
                 cont.setNombre(res.getString("Nombre"));
@@ -242,9 +232,7 @@ public class BusquedaDatos {
                     +cont.getApellidoPaterno()+"\nApellidoMaterno="+cont.getApellidoMaterno()
                     +"\nDomicilio="+((Persona)cont).getDomicilio()+"\nMedio de Contacto Preferido="
                     +((Persona)cont).getContactoPreferido()+"\nOcupacion="+((Persona)cont).getOcupacion());
-            }else{
-                JOptionPane.showMessageDialog(null, "No Se encontro registro de "+Nombre+" "+AP+" "+AM);
-            }
+            
             consulta.close();
             res.close();
             conexion.desconectar();
