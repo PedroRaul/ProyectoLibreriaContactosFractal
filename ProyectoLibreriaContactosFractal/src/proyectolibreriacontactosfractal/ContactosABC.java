@@ -64,13 +64,30 @@ public class ContactosABC {
             System.out.println(e.getMessage());
             Mensajes.mostrarDialogo("Error en el registro intente de nuevo");
         }
-        
-        
-       
-        
-            
-        
     }
+    
+    
+    
+    public static void DatoEliminado(String queryDato){
+        conexion= new conexion();
+        conexion.conectar();
+        
+        try{
+            Statement estatuto = conexion.getConnection().createStatement();
+            estatuto.executeUpdate(queryDato);
+            
+            Mensajes.mostrarDialogo("Se ha eliminado correctamente");
+            estatuto.close();
+            conexion.desconectar();
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+          
+            Mensajes.mostrarDialogo("Ha ocurrido un error en la eliminacion");
+        }
+        }
+   
+    
+    
     
     public static int verIdMaximo(String tabla)
     
@@ -82,7 +99,7 @@ public class ContactosABC {
             PreparedStatement consulta;
             consulta = conexion.getConnection().prepareStatement
             ("SELECT * From "+tabla+" ");
-            ResultSet res= consulta.executeQuery();;
+            ResultSet res= consulta.executeQuery();
             if(res.next() ) 
             res.last();
             resultado= Integer.parseInt(res.getString("IdPersona"));
@@ -91,7 +108,7 @@ public class ContactosABC {
 			
 	} catch (SQLException e) {
             System.out.println(e.getMessage());
-            Mensajes.mostrarDialogo("Error en el registro intente de nuevo");
+            Mensajes.mostrarDialogo(" Error en el registro intente de nuevo");
             
         }
         conexion.desconectar();
@@ -99,6 +116,7 @@ public class ContactosABC {
         return resultado; 
             
     }
+    
     
     
      public static void guardarMedioContacto(String query){
@@ -120,4 +138,11 @@ public class ContactosABC {
     
     
 }
+   
+     
+     
+     
+     
+     
+     
 }

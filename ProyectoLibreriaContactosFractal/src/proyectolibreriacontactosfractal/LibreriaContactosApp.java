@@ -28,7 +28,7 @@ public class LibreriaContactosApp {
     
     public static void main(String[] args) {
         
-        System.out.print(ContactosABC.verIdMaximo("deportista"));
+        
        mostrarMenuPrincipal();
         
         
@@ -42,7 +42,7 @@ public class LibreriaContactosApp {
 // muestra el menu principal de la aplicacion
     private static void mostrarMenuPrincipal() {
         valoropcionmenuinteger=Mensajes.mostrarDialogoCapturaInteger("Opciones (Ingresa Numero Correspondiente)"
-        +"\n"+"1.- Buscar Contacto "+"\n"+"2.- Agregar Contacto");
+        +"\n"+"1.- Buscar Contacto "+"\n"+"2.- Agregar Contacto"+"\n"+"3.-Modificar Contacto"+"\n"+"4.-Eliminar Contacto");
         
         if(valoropcionmenuinteger==1)
             mostrarCapturaBuscarContacto();
@@ -51,9 +51,15 @@ public class LibreriaContactosApp {
         else if( valoropcionmenuinteger == 3 )     
             mostrarCapturaEditarContacto();
         else if( valoropcionmenuinteger == 4 )
+            mostrarCapturaEliminarComtacto();
+         else if( valoropcionmenuinteger == 5 )
             System.exit(0);
         
     }
+    
+   
+    
+    
     
     private static void mostrarCapturaEditarContacto() {
         String tipo = Mensajes.mostrarDialogoCapturaString("Ingresa tipo de contacto.");           
@@ -94,6 +100,22 @@ public class LibreriaContactosApp {
         mostrarMenuPrincipal();
     }
     
+     private static void mostrarCapturaEliminarComtacto(){
+      Mensajes.mostrarDialogoCapturaString("Ingresa tipo de contacto.");  
+    valoropcionmenustring=Mensajes.mostrarDialogoCapturaString("Ingresa el tipo de contacto");
+      TipoProfesion();
+     }
+     public static void TipoProfesion(){
+        switch(valoropcionmenustring)
+        {
+            case"deportista":
+                EliminarPersona.EliminarPersonaDeportista();
+                mostrarMenuPrincipal();
+            break;
+           
+        }
+      
+     }
     
 
     private static void mostrarCapturaTipoDeContacto() {
