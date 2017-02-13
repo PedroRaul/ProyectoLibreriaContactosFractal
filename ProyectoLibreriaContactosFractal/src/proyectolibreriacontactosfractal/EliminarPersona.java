@@ -33,7 +33,7 @@ public class EliminarPersona {
       }
       dato.setNombre(Mensajes.mostrarDialogoCapturaString("Ingresa el Nombre a eliminar"));
       dato.setApellidoPaterno(Mensajes.mostrarDialogoCapturaString("Ingresa Apellido Paterno"));
-      //dato.setApellidoMaterno(Mensajes.mostrarDialogoCapturaString("Ingresa Apellido Materno"));   
+      dato.setApellidoMaterno(Mensajes.mostrarDialogoCapturaString("Ingresa Apellido Materno"));   
   } 
   
   
@@ -43,20 +43,66 @@ public class EliminarPersona {
   public static void EliminarPersonaDeportista(){
       
       EliminarDatos(ContactosABC.tabladeportista);
-      
+      System.out.println(ContactosABC.tabladeportista);
+      System.out.println(dato.getNombre());
+      System.out.println(dato.getApellidoMaterno());
     
             queryEliminar=("DELETE FROM "+ContactosABC.tabladeportista+" WHERE Nombre ='"+dato.getNombre()+"'"
-                    + "AND ApePa='"+dato.getApellidoMaterno()+"'"
-                    + "");
+                    + "AND ApePa='"+dato.getApellidoPaterno()+"'"
+                    + "AND ApeMa='"+dato.getApellidoMaterno()+"'"
+                    +"");
     ContactosABC.DatoEliminado(queryEliminar);
       
   }
   
   public static void EliminarPersonaDoctor(){
-      
+      EliminarDatos(ContactosABC.tabladoctor);
+     
+     
+    
+            queryEliminar=("DELETE FROM "+ContactosABC.tabladoctor+" WHERE Nombre ='"+dato.getNombre()+"'"
+                    + "AND ApePa='"+dato.getApellidoPaterno()+"'"
+                    + "AND ApeMa='"+dato.getApellidoMaterno()+"'"
+                    +"");
+    ContactosABC.DatoEliminado(queryEliminar); 
   }
+ 
   
-  
-  
+  public static void EliminarPersonaEstudiante(){
+       EliminarDatos(ContactosABC.tablaestudiante);
+     
+     
+    
+            queryEliminar=("DELETE FROM "+ContactosABC.tablaestudiante+" WHERE Nombre ='"+dato.getNombre()+"'"
+                    + "AND ApePa='"+dato.getApellidoPaterno()+"'"
+                    + "AND ApeMa='"+dato.getApellidoMaterno()+"'"
+                    +"");
+    ContactosABC.DatoEliminado(queryEliminar); 
+  }
+        
+
+
+public static void EliminarPersonaLicenciado(){
+      EliminarDatos(ContactosABC.tablalicenciado);
+     
+     
+    
+            queryEliminar=("DELETE FROM "+ContactosABC.tablalicenciado+" WHERE Nombre ='"+dato.getNombre()+"'"
+                    + "AND ApePa='"+dato.getApellidoPaterno()+"'"
+                    + "AND ApeMa='"+dato.getApellidoMaterno()+"'"
+                    +"");
+    ContactosABC.DatoEliminado(queryEliminar); 
+}  
+  public static void EliminarPersona(){
+        EliminarDatos(ContactosABC.tablapersona);
+     
+     
+    
+            queryEliminar=("DELETE FROM "+ContactosABC.tablapersona+" WHERE Nombre ='"+dato.getNombre()+"'"
+                    + "AND ApePa='"+dato.getApellidoPaterno()+"'"
+                    + "AND ApeMa='"+dato.getApellidoMaterno()+"'"
+                    +"");
+    ContactosABC.DatoEliminado(queryEliminar); 
+  }
     
 }

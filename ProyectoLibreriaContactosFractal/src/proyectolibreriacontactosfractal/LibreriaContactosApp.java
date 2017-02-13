@@ -74,7 +74,7 @@ public class LibreriaContactosApp {
     private static void mostrarCapturaBuscarContacto() {
         
         valorprofesionmenustring=Mensajes.mostrarDialogoCapturaString("INGRESA EL NUMERO CORRESPONDIENTE A LA PROFESION...\n\n1.Deportista\n2-Doctor\n3.Estudiante\n4.Licenciado\n5.Persona");
-        //valoropcionmenustring=Mensajes.mostrarDialogoCapturaString("Ingresa el nombre del contacto a buscar");
+        valoropcionmenustring=Mensajes.mostrarDialogoCapturaString("Ingresa el nombre del contacto a buscar");
        
         switch(valorprofesionmenustring)
         {
@@ -100,9 +100,12 @@ public class LibreriaContactosApp {
         mostrarMenuPrincipal();
     }
     
-     private static void mostrarCapturaEliminarComtacto(){
-      Mensajes.mostrarDialogoCapturaString("Ingresa tipo de contacto.");  
+     private static void mostrarCapturaEliminarComtacto(){ 
     valoropcionmenustring=Mensajes.mostrarDialogoCapturaString("Ingresa el tipo de contacto");
+   
+    
+    
+    
       TipoProfesion();
      }
      public static void TipoProfesion(){
@@ -112,6 +115,22 @@ public class LibreriaContactosApp {
                 EliminarPersona.EliminarPersonaDeportista();
                 mostrarMenuPrincipal();
             break;
+             case"doctor":
+                EliminarPersona.EliminarPersonaDoctor();
+                mostrarMenuPrincipal();
+            break;
+              case"estudiante":
+                EliminarPersona.EliminarPersonaEstudiante();
+                mostrarMenuPrincipal();
+            break;
+            case"Licenciado":
+                EliminarPersona.EliminarPersonaLicenciado();
+                mostrarMenuPrincipal();
+            break;
+            case"persona":
+                EliminarPersona.EliminarPersona();
+                mostrarMenuPrincipal();
+            break;
            
         }
       
@@ -119,8 +138,12 @@ public class LibreriaContactosApp {
     
 
     private static void mostrarCapturaTipoDeContacto() {
-        String tipo = Mensajes.mostrarDialogoCapturaString("Ingresa tipo de contacto."); 
         valoropcionmenustring=Mensajes.mostrarDialogoCapturaString("Ingresa el tipo de contacto");
+        
+        
+        
+        
+        
             evaluarTipoDeContacto();
     }
     
