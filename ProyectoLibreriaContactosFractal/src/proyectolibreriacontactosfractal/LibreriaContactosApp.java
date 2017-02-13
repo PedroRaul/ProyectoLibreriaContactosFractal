@@ -9,6 +9,7 @@ package proyectolibreriacontactosfractal;
      * Clase que ejecuta la Aplicacion
      */
     
+    
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 public class LibreriaContactosApp {
@@ -27,8 +28,8 @@ public class LibreriaContactosApp {
     
     public static void main(String[] args) {
         
-        
-        mostrarMenuPrincipal();
+        System.out.print(ContactosABC.verIdMaximo("deportista"));
+       mostrarMenuPrincipal();
         
         
         
@@ -45,13 +46,23 @@ public class LibreriaContactosApp {
         
         if(valoropcionmenuinteger==1)
             mostrarCapturaBuscarContacto();
-        else
+        else if( valoropcionmenuinteger == 2 )
             mostrarCapturaTipoDeContacto();
+        else if( valoropcionmenuinteger == 3 )     
+            mostrarCapturaEditarContacto();
+        else if( valoropcionmenuinteger == 4 )
+            System.exit(0);
         
     }
     
-
-
+    private static void mostrarCapturaEditarContacto() {
+        String tipo = Mensajes.mostrarDialogoCapturaString("Ingresa tipo de contacto.");           
+        valoropcionmenustring=Mensajes.mostrarDialogoCapturaString("Ingresa el nombre del contacto a actualizar");
+        ModificarDatos.modificarContacto(tipo, valoropcionmenustring);
+        mostrarMenuPrincipal();
+    
+    }
+    
 // muestra el un mensaje de entrada para capturar el nombre del contacto a buscar 
     
     private static void mostrarCapturaBuscarContacto() {
@@ -86,7 +97,7 @@ public class LibreriaContactosApp {
     
 
     private static void mostrarCapturaTipoDeContacto() {
-        
+        String tipo = Mensajes.mostrarDialogoCapturaString("Ingresa tipo de contacto."); 
         valoropcionmenustring=Mensajes.mostrarDialogoCapturaString("Ingresa el tipo de contacto");
             evaluarTipoDeContacto();
     }
@@ -124,6 +135,3 @@ public class LibreriaContactosApp {
    
 }
     
-
-
-

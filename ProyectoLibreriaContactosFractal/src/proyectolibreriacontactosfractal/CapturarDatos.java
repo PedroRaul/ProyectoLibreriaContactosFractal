@@ -1,38 +1,12 @@
 //
 package proyectolibreriacontactosfractal;
 
-import java.sql.SQLException;
-import java.sql.Statement;
-
-
-
 public class CapturarDatos {
     
-    private static Contacto contacto;
-    private static conexion conexion;
-    private static final String tabladeportista="deportista";
-    private static final String tabladoctor="doctor";
-    private static final String tablaestudiante="estudiante";
-    private static final String tablalicenciado="licenciado";
-    private static final String tablapersona="persona";
-    private static final String tablacontacto="contacto";
-    private static final String campotelefonooficina="TelOficina";
-    private static final String campohorarioinicial="HorarioIn";
-    private static final String campohorariofinal="HorarioFin";
-    private static final String campodomicilio="Domicilio";
-    private static final String campomediodecontactopreferido="MedioPreferido";
-    private static final String campoocupacion="Ocupacion";
-    private static final String campogenero="Genero";
-    private static final String campofechadenacimiento="FechaNac";
-    private static final String campodeporte="Deporte";
-    private static final String campoespecialidad="Especialidad";
-    private static final String camponombrehospital="NombreH";
-    private static final String campodireccionhospital="DireccionH";
-    private static final String campolugardenacimiento="LugarNac";
-    private static final String campocarrera="Carrera";
-    
-    
-    
+   public static Contacto contacto;
+   public static String querycontactos;
+   public static String querymediodecontactos;
+   private static int idMaximo=0;
     
     private static void capturaDatosContacto(String tipoContacto)
             
@@ -40,180 +14,162 @@ public class CapturarDatos {
         // se aplica polimorfismo al objeto contacto en base al valor del parametro 
         switch(tipoContacto)
         {
-            case"deportista":
+            case ContactosABC.tabladeportista:
                 contacto=new Deportista();
                 break;
-            case"doctor":
+            case ContactosABC.tabladoctor:
                 contacto=new Doctor();
                 break;
-            case"estudiante":
+            case ContactosABC.tablaestudiante:
                 contacto=new Estudiante();
                 break;
-            case"licenciado":
+            case ContactosABC.tablalicenciado:
                 contacto=new Licenciado();
                 break;
-            case"persona":
+            case ContactosABC.tablapersona:
                 contacto=new Persona();
                 break;
         }
         
-        contacto.setNombre(capturarDatoContacto("Ingresa el nombre"));
-        contacto.setApellidoPaterno(capturarDatoContacto("Ingresa el Apellido Paterno"));
-        contacto.setApellidoMaterno(capturarDatoContacto("Ingresa el Apellido Materno"));
-        contacto.setTelefonoCasa(capturarDatoContacto("Ingresa el telefono de casa"));
-        contacto.setTelefonoCelular(capturarDatoContacto("Ingresa el telefono celular"));
-        contacto.setEmail(capturarDatoContacto("Ingresa el email"));
+        contacto.setNombre(Mensajes.mostrarDialogoCapturaString("Ingresa el nombre"));
+        contacto.setApellidoPaterno(Mensajes.mostrarDialogoCapturaString("Ingresa el Apellido Paterno"));
+        contacto.setApellidoMaterno(Mensajes.mostrarDialogoCapturaString("Ingresa el Apellido Materno"));
+        contacto.setTelefonoCasa(Mensajes.mostrarDialogoCapturaString("Ingresa el telefono de casa"));
+        contacto.setTelefonoCelular(Mensajes.mostrarDialogoCapturaString("Ingresa el telefono celular"));
+        contacto.setEmail(Mensajes.mostrarDialogoCapturaString("Ingresa el email"));
         
     }
     
    
      public static void capturarDatosDeportista() {
         
-        capturaDatosContacto(tabladeportista);
-        ((Deportista)contacto).setGenero(capturarDatoContacto("Ingresa el Genero"));
-        ((Deportista)contacto).setFechaNacimiento(capturarDatoContacto("Ingresa la fecha de nacimiento"));
-        ((Deportista)contacto).setDeporte(capturarDatoContacto("Ingresa el Deporte"));
+        capturaDatosContacto(ContactosABC.tabladeportista);
+        ((Deportista)contacto).setGenero(Mensajes.mostrarDialogoCapturaString("Ingresa el Genero"));
+        ((Deportista)contacto).setFechaNacimiento(Mensajes.mostrarDialogoCapturaString("Ingresa la fecha de nacimiento"));
+        ((Deportista)contacto).setDeporte(Mensajes.mostrarDialogoCapturaString("Ingresa el Deporte"));
+        
+        querycontactos="INSERT INTO "+ContactosABC.tabladeportista
+                +"("+ContactosABC.camponombre+", "+ContactosABC.campoapellidopaterno
+                +","+ContactosABC.campoapellidomaterno+","+ContactosABC.campogenero
+                +","+ContactosABC.campofechadenacimiento+","+ContactosABC.campodeporte
+                +","+ContactosABC.campoprofesion+")"
+                    + " VALUES ('"+contacto.getNombre()+"','"+contacto.getApellidoPaterno()
+                +"','"+contacto.getApellidoMaterno()+"','"+((Deportista)contacto).getGenero()
+                +"','"+((Deportista)contacto).getFechaNacimiento()+"','"
+                +((Deportista)contacto).getDeporte()+"','"+ContactosABC.tabladeportista+"')";
+        
+        idMaximo=ContactosABC.verIdMaximo(ContactosABC.tabladeportista)+1;
+        querymediodecontactos="INSERT INTO contacto(`"+ContactosABC.campoidpersona+"`, `"+ContactosABC.campoprofesion+"`, `"+ContactosABC.campocontactos+"`) VALUES ("+idMaximo+",'"+ContactosABC.tabladeportista+"','"+contacto.getEmail()+"')";
+       
+        ContactosABC.guardarDatosContacto(querycontactos);
+        ContactosABC.guardarDatosContacto(querymediodecontactos);
         
         
-        guardarDatosGeneralesContacto(tabladeportista,contacto.getNombre(),contacto.getApellidoPaterno(),
-                contacto.getApellidoMaterno());
-        
-        guardarDatosParticularesContacto(tabladeportista,contacto.getNombre(),campogenero,campofechadenacimiento,campodeporte,"",
-                ((Deportista)contacto).getGenero(),((Deportista)contacto).getFechaNacimiento(),
-                ((Deportista)contacto).getDeporte(),"");
-        }
+     }
 
     public static void capturarDatosDoctor() {
         
         capturaDatosContacto("doctor");
-        ((Doctor)contacto).setFechaNacimiento(capturarDatoContacto("Ingresa la fecha de nacimiento"));
-        ((Doctor)contacto).setEspecialidad(capturarDatoContacto("Ingresa la especialidad"));
-        ((Doctor)contacto).setNombreHospital(capturarDatoContacto("Ingresa el Nombre del hospital donde ejerce"));
-        ((Doctor)contacto).setDireccionHospital(capturarDatoContacto("Ingresa la direccion del hospital donde ejerce"));
+        ((Doctor)contacto).setFechaNacimiento(Mensajes.mostrarDialogoCapturaString("Ingresa la fecha de nacimiento"));
+        ((Doctor)contacto).setEspecialidad(Mensajes.mostrarDialogoCapturaString("Ingresa la especialidad"));
+        ((Doctor)contacto).setNombreHospital(Mensajes.mostrarDialogoCapturaString("Ingresa el Nombre del hospital donde ejerce"));
+        ((Doctor)contacto).setDireccionHospital(Mensajes.mostrarDialogoCapturaString("Ingresa la direccion del hospital donde ejerce"));
         
-        guardarDatosGeneralesContacto(tabladoctor,contacto.getNombre(),contacto.getApellidoPaterno(),
-                contacto.getApellidoMaterno());
+        querycontactos="INSERT INTO "+ContactosABC.tabladoctor
+                +"("+ContactosABC.camponombre+", "+ContactosABC.campoapellidopaterno+","
+                +ContactosABC.campoapellidomaterno+","+ContactosABC.campofechadenacimiento+","
+                +ContactosABC.campoespecialidad+","+ContactosABC.camponombrehospital+","
+                +ContactosABC.campodireccionhospital+","+ContactosABC.campoprofesion+")"
+                    + " VALUES ('"+contacto.getNombre()+"','"+contacto.getApellidoPaterno()
+                +"','"+contacto.getApellidoMaterno()+"','"+((Doctor)contacto).getFechaNacimiento()
+                +"','"+((Doctor)contacto).getEspecialidad()+"','"+((Doctor)contacto).getNombreHospital()
+                +"','"+((Doctor)contacto).getDireccionHospital()+"','"+ContactosABC.tabladoctor+"')";
         
-        guardarDatosParticularesContacto(tabladoctor,contacto.getNombre(),campofechadenacimiento,campoespecialidad
-          ,camponombrehospital,campodireccionhospital,((Doctor)contacto).getFechaNacimiento(),((Doctor)contacto).getEspecialidad(),
-          ((Doctor)contacto).getNombreHospital(),((Doctor)contacto).getDireccionHospital());
-        
+        idMaximo=ContactosABC.verIdMaximo(ContactosABC.tabladoctor)+1;
+        querymediodecontactos="INSERT INTO contacto(`"+ContactosABC.campoidpersona+"`, `"+ContactosABC.campoprofesion+"`, `"+ContactosABC.campocontactos+"`) VALUES ("+idMaximo+",'"+ContactosABC.tabladoctor+"','"+contacto.getEmail()+"')";
+       
+        ContactosABC.guardarDatosContacto(querycontactos);
+        ContactosABC.guardarDatosContacto(querymediodecontactos);
         }
 
     public static void capturarDatosEstudiante() {
         
         capturaDatosContacto("estudiante");
-        ((Estudiante)contacto).setFechaNacimiento(capturarDatoContacto("Ingresa la fecha de nacimiento"));
-        ((Estudiante)contacto).setLugarNacimiento(capturarDatoContacto("Ingresa el lugar de nacimiento"));
-        ((Estudiante)contacto).setEstudiaCarrera(capturarDatoContacto("Ingresa la carrera que estudia"));
+        ((Estudiante)contacto).setFechaNacimiento(Mensajes.mostrarDialogoCapturaString("Ingresa la fecha de nacimiento"));
+        ((Estudiante)contacto).setLugarNacimiento(Mensajes.mostrarDialogoCapturaString("Ingresa el lugar de nacimiento"));
+        ((Estudiante)contacto).setEstudiaCarrera(Mensajes.mostrarDialogoCapturaString("Ingresa la carrera que estudia"));
         
+        querycontactos="INSERT INTO "+ContactosABC.tablaestudiante
+                +"("+ContactosABC.camponombre+", "+ContactosABC.campoapellidopaterno
+                +","+ContactosABC.campoapellidomaterno+","+ContactosABC.campolugardenacimiento
+                +","+ContactosABC.campofechadenacimiento+","+ContactosABC.campocarrera
+                +","+ContactosABC.campoprofesion+")"
+                    + " VALUES ('"+contacto.getNombre()+"','"+contacto.getApellidoPaterno()
+                +"','"+contacto.getApellidoMaterno()+"','"+((Estudiante)contacto).getLugarNacimento()
+                +"','"+((Estudiante)contacto).getFechaNacimiento()+"','"
+                +((Estudiante)contacto).getEstudiaCarrera()+"','"+ContactosABC.tablaestudiante+"')";
         
-        guardarDatosGeneralesContacto(tablaestudiante,contacto.getNombre(),contacto.getApellidoPaterno(),
-                contacto.getApellidoMaterno());
+        idMaximo=ContactosABC.verIdMaximo(ContactosABC.tablaestudiante)+1;
+        querymediodecontactos="INSERT INTO contacto(`"+ContactosABC.campoidpersona+"`, `"+ContactosABC.campoprofesion+"`, `"+ContactosABC.campocontactos+"`) VALUES ("+idMaximo+",'"+ContactosABC.tablaestudiante+"','"+contacto.getEmail()+"')";
+       
+        ContactosABC.guardarDatosContacto(querycontactos);
+        ContactosABC.guardarDatosContacto(querymediodecontactos);
         
-        guardarDatosParticularesContacto(tablaestudiante,contacto.getNombre(),campolugardenacimiento,campofechadenacimiento
-          ,campocarrera,"",((Estudiante)contacto).getLugarNacimento(),((Estudiante)contacto).getFechaNacimiento(),
-          ((Estudiante)contacto).getEstudiaCarrera(),"");
-    
        }
 
     public static void capturarDatosLicenciado() {
         
         capturaDatosContacto("licenciado");
-        ((Licenciado)contacto).setTelefonoOficina(capturarDatoContacto("Ingresa el Telefono de oficina"));
-        ((Licenciado)contacto).setHorarioAtencionInicio(capturarDatoContacto("Ingresa el horario de inicio"));
-        ((Licenciado)contacto).setHorarioAtencionFin(capturarDatoContacto("Ingresa el horario de fin"));
+        ((Licenciado)contacto).setTelefonoOficina(Mensajes.mostrarDialogoCapturaString("Ingresa el Telefono de oficina"));
+        ((Licenciado)contacto).setHorarioAtencionInicio(Mensajes.mostrarDialogoCapturaString("Ingresa el horario de inicio"));
+        ((Licenciado)contacto).setHorarioAtencionFin(Mensajes.mostrarDialogoCapturaString("Ingresa el horario de fin"));
         
+        querycontactos="INSERT INTO "+ContactosABC.tablalicenciado
+                +"("+ContactosABC.camponombre+", "+ContactosABC.campoapellidopaterno
+                +","+ContactosABC.campoapellidomaterno+","+ContactosABC.campotelefonooficina
+                +","+ContactosABC.campohorarioinicial+","+ContactosABC.campohorariofinal
+                +","+ContactosABC.campoprofesion+")"
+                    + " VALUES ('"+contacto.getNombre()+"','"+contacto.getApellidoPaterno()
+                +"','"+contacto.getApellidoMaterno()+"','"+((Licenciado)contacto).getTelefonoOficina()
+                +"','"+((Licenciado)contacto).getHorarioAtencionInicio()+"','"
+                +((Licenciado)contacto).getHorarioAtencionFin()+"','"+ContactosABC.tablalicenciado+"')";
         
-         guardarDatosGeneralesContacto(tablalicenciado,contacto.getNombre(),contacto.getApellidoPaterno(),
-                contacto.getApellidoMaterno());
-        
-        guardarDatosParticularesContacto(tablalicenciado,contacto.getNombre(),campotelefonooficina,campohorarioinicial
-          ,campohorariofinal,"",((Licenciado)contacto).getTelefonoOficina(),((Licenciado)contacto).getHorarioAtencionInicio(),
-          ((Licenciado)contacto).getHorarioAtencionFin(),"");
-        }
+        idMaximo=ContactosABC.verIdMaximo(ContactosABC.tablalicenciado)+1;
+        querymediodecontactos="INSERT INTO contacto(`"+ContactosABC.campoidpersona+"`, `"+ContactosABC.campoprofesion+"`, `"+ContactosABC.campocontactos+"`) VALUES ("+idMaximo+",'"+ContactosABC.tablalicenciado+"','"+contacto.getEmail()+"')";
+       
+        ContactosABC.guardarDatosContacto(querycontactos);
+        ContactosABC.guardarDatosContacto(querymediodecontactos);
+         }
 
     public static void capturarDatosPersona() {
         
         capturaDatosContacto("persona");
-        ((Persona)contacto).setDomicilio(capturarDatoContacto("Ingresa el Domicilio"));
-        ((Persona)contacto).setContactoPreferido(capturarDatoContacto("Ingresa el medio de contacto favorito"));
-        ((Persona)contacto).setOcupacion(capturarDatoContacto("Ingresa la ocupacion"));
+        ((Persona)contacto).setDomicilio(Mensajes.mostrarDialogoCapturaString("Ingresa el Domicilio"));
+        ((Persona)contacto).setContactoPreferido(Mensajes.mostrarDialogoCapturaString("Ingresa el medio de contacto favorito"));
+        ((Persona)contacto).setOcupacion(Mensajes.mostrarDialogoCapturaString("Ingresa la ocupacion"));
         
-        guardarDatosGeneralesContacto(tablapersona,contacto.getNombre(),contacto.getApellidoPaterno(),
-                contacto.getApellidoMaterno());
+         querycontactos="INSERT INTO "+ContactosABC.tablapersona
+                +"("+ContactosABC.camponombre+", "+ContactosABC.campoapellidopaterno
+                +","+ContactosABC.campoapellidomaterno+","+ContactosABC.campodomicilio
+                +","+ContactosABC.campomediodecontactopreferido+","+ContactosABC.campoocupacion
+                +","+ContactosABC.campoprofesion+")"
+                    + " VALUES ('"+contacto.getNombre()+"','"+contacto.getApellidoPaterno()
+                +"','"+contacto.getApellidoMaterno()+"','"+((Persona)contacto).getDomicilio()
+                +"','"+((Persona)contacto).getContactoPreferido()+"','"
+                +((Persona)contacto).getOcupacion()+"','"+ContactosABC.tablapersona+"')";
         
-        guardarDatosParticularesContacto(tablapersona,contacto.getNombre(),campodomicilio,campomediodecontactopreferido
-          ,campoocupacion,"",((Persona)contacto).getDomicilio(),((Persona)contacto).getContactoPreferido(),
-          ((Persona)contacto).getOcupacion(),"");
+       idMaximo=ContactosABC.verIdMaximo(ContactosABC.tablapersona)+1;
+        querymediodecontactos="INSERT INTO contacto(`"+ContactosABC.campoidpersona+"`, `"+ContactosABC.campoprofesion+"`, `"+ContactosABC.campocontactos+"`) VALUES ("+idMaximo+",'"+ContactosABC.tablapersona+"','"+contacto.getEmail()+"')";
+       
+        ContactosABC.guardarDatosContacto(querycontactos);
+        ContactosABC.guardarDatosContacto(querymediodecontactos);
         
     }
     
     
-    // Ejecuta el query para almacenar los 3 valores que son comunes en todas las tablas
-    public static void guardarDatosGeneralesContacto(String nombretabla,String nombre,String apellidopaterno,String apellidomaterno){
-        conexion=new conexion();
-        conexion.conectar();
-        try{
-            Statement estatuto = conexion.getConnection().createStatement();
-            estatuto.executeUpdate("INSERT INTO `"+nombretabla+"`(`Nombre`, `ApePa`, `ApeMa`,`Profesion`)"
-                    + " VALUES ('"+nombre+"','"+apellidopaterno+"','"+apellidomaterno+"','"+nombretabla+"')");
-            estatuto.close();
-            conexion.desconectar();
-			
-	} catch (SQLException e) {
-            System.out.println(e.getMessage());
-            Mensajes.mostrarDialogo("Error en el registro intente de nuevo");
-        }
-    }
-    
-    public static void guardarDatosParticularesContacto(String nombretabla,String nombre,String campo1,String campo2,String campo3,String campo4,String valorcampo1,String valorcampo2,String valorcampo3,String valorcampo4){
-        
-        conexion=new conexion();
-        if(nombretabla.equals(tabladoctor))
-        {
-         conexion.conectar();
-        try{
-            Statement estatuto = conexion.getConnection().createStatement();
-            estatuto.executeUpdate("UPDATE `"+nombretabla+"` SET `"+campo1+"`='"+valorcampo1+"',`"+campo2+"`='"+valorcampo2+"',"
-                    + "`"+campo3+"`='"+valorcampo3+"',`"+campo4+"`='"+valorcampo4+"' WHERE Nombre='"+nombre+"'");
-            Mensajes.mostrarDialogo("Se ha registrado Exitosamente");
-            estatuto.close();
-            conexion.desconectar();
-			
-	} catch (SQLException e) {
-            System.out.println(e.getMessage());
-            Mensajes.mostrarDialogo("Error en el registro intente de nuevo");
-        }
-        }
-        else
-        {
-            conexion.conectar();
-        try{
-            Statement estatuto = conexion.getConnection().createStatement();
-            estatuto.executeUpdate("UPDATE `"+nombretabla+"` SET `"+campo1+"`='"+valorcampo1+"',`"+campo2+"`='"+valorcampo2+"',"
-                    + "`"+campo3+"`='"+valorcampo3+"'WHERE Nombre='"+nombre+"'");
-            Mensajes.mostrarDialogo("Se ha registrado Exitosamente");
-            estatuto.close();
-            conexion.desconectar();
-			
-	} catch (SQLException e) {
-            System.out.println(e.getMessage());
-            Mensajes.mostrarDialogo("Error en el registro intente de nuevo");
-        }
-        }
-            
-        
-    }
     
    
     
-    //Captura  un dato del contacto
-    public static String capturarDatoContacto(String mensaje)
-    {
-        
-        return Mensajes.mostrarDialogoCapturaString(mensaje);
-    }
     
     
 }
