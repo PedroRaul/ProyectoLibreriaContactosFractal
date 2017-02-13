@@ -12,6 +12,9 @@ public class BusquedaDatos {
     private static Contacto contacto;
     public static conexion conexion;
     private static String valoreleccion;
+    private static String nombrecontacto;
+    private static String apellidopaternocontacto;
+    private static String apellidomaternocontacto;
     
     public static void buscarContacto(String tipo, String contacto)
     {
@@ -40,39 +43,59 @@ public class BusquedaDatos {
         }
     }
     
-    public static void buscarDeportista(String contacto)
+    public static void buscarDeportista(String contac)
     {   
+        
+        /*
+        *remplazar el objeto "cont" por el objeto contacto que esta declarado al inicio de la clase 
+        *el objeto contacto se inicializa como el tipo del metodo en el que estamos en este caso = new Deportista()
+        *
+        */
         conexion=new conexion();
         conexion.conectar();
-        Contacto cont=new Contacto();
-        cont=new Deportista();
+        contacto=new Deportista();
         
-        String Nombre=JOptionPane.showInputDialog(null,"Nombre");
-        String AP=JOptionPane.showInputDialog(null,"Apellido Paterno");
-        String AM=JOptionPane.showInputDialog(null,"Apellido Materno");
+        
+        /*
+        * remplazar el uso de JOptionePane.showMessageDialog(null,"") 
+        por el metodo mostrarDialogoCapturaString() de la clase Mensajes
+        
+        * las variables Nombre,AP,AM se renombraron nombreContacto,apellidopaternocontacto,apellidomaternocontacto 
+        y se declararon como variables globales al inicio de la clase ya que se usan en todos los metodos 
+        */
+        
+        nombrecontacto=Mensajes.mostrarDialogoCapturaString("Nombre");
+        apellidopaternocontacto=Mensajes.mostrarDialogoCapturaString("Apellido Paterno");
+        apellidopaternocontacto=Mensajes.mostrarDialogoCapturaString("Apellido Materno");
+        
+        /*
+        *Cambiado el nombre de la variable res por resultadoquery
+        
+        *en la impresion del resultado cambiado el JOptionPane.showMessageDialog(null,"") por Mensajes.mostrarDialogo("")
+        */
         
 	try{
             PreparedStatement consulta;
-            consulta = conexion.getConnection().prepareStatement("SELECT Nombre, ApePa, ApeMa,Genero,FechaNac,Deporte FROM Deportista WHERE Nombre = '"+Nombre+"' and ApePa='"+AP+"' and ApeMa='"+AM+"'");
-            ResultSet res = consulta.executeQuery();
-            while(res.next()){
-                cont.setNombre(res.getString("Nombre"));
-		cont.setApellidoPaterno(res.getString("ApePa"));
-		cont.setApellidoMaterno(res.getString("ApeMa"));
-                ((Deportista)cont).setGenero(res.getString("Genero"));
-                ((Deportista)cont).setFechaNacimiento(res.getString("FechaNac"));
-                ((Deportista)cont).setDeporte(res.getString("Deporte"));
+            consulta = conexion.getConnection().prepareStatement("SELECT Nombre, ApePa, ApeMa,Genero,FechaNac,Deporte FROM Deportista WHERE Nombre = '"+nombrecontacto+"' and ApePa='"+apellidopaternocontacto+"' and ApeMa='"+apellidomaternocontacto+"'");
+            ResultSet resultadoquery = consulta.executeQuery();
+            while(resultadoquery.next()){
+                contacto.setNombre(resultadoquery.getString("Nombre"));
+		contacto.setApellidoPaterno(resultadoquery.getString("ApePa"));
+		contacto.setApellidoMaterno(resultadoquery.getString("ApeMa"));
+                ((Deportista)contacto).setGenero(resultadoquery.getString("Genero"));
+                ((Deportista)contacto).setFechaNacimiento(resultadoquery.getString("FechaNac"));
+                ((Deportista)contacto).setDeporte(resultadoquery.getString("Deporte"));
             }
-                JOptionPane.showMessageDialog(null, "Nombre="+cont.getNombre()+"\nApellidoPaterno="
-                    +cont.getApellidoPaterno()+"\nApellidoMaterno="+cont.getApellidoMaterno()
-                    +"\nGenero="+((Deportista)cont).getGenero()+"\nFecha de Nacimiento="
-                    +((Deportista)cont).getFechaNacimiento()+"\nDeporte="+((Deportista)cont).getDeporte());
+               Mensajes.mostrarDialogo( "Nombre="+contacto.getNombre()+"\nApellidoPaterno="
+                    +contacto.getApellidoPaterno()+"\nApellidoMaterno="+contacto.getApellidoMaterno()
+                    +"\nGenero="+((Deportista)contacto).getGenero()+"\nFecha de Nacimiento="
+                    +((Deportista)contacto).getFechaNacimiento()+"\nDeporte="+((Deportista)contacto).getDeporte());
             
             consulta.close();
-            res.close();
+            resultadoquery.close();
             conexion.desconectar();
             } catch (SQLException e){
-            JOptionPane.showMessageDialog(null, "Error, no se conectó");
+            Mensajes.mostrarDialogo( "Error, no se conectó");
             System.out.println(e);
 	}
     }
