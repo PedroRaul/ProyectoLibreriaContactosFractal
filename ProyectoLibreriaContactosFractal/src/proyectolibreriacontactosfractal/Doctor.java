@@ -1,4 +1,3 @@
-//
 package proyectolibreriacontactosfractal;
 
 public class Doctor extends Contacto{
@@ -12,14 +11,13 @@ public class Doctor extends Contacto{
 		super();
 	}
 	
-	public Doctor(String nombre,String apellidopaterno, String apellidomaterno,
-			      String telefonocasa,String telefonocelular,String email,String fechanacimiento,
-				  String especialidad,String nombrehospital,String direccionhospital){
-		super(nombre,apellidopaterno,apellidomaterno,telefonocasa,telefonocelular,email);	
-		this.fechanacimiento=fechanacimiento;
+	public Doctor(String nombre,String apellidopaterno, String apellidomaterno,String mediocontacto,int id, String especialidad, String fechanacimiento, String direccionhospital,String nombrehospital )
+	{
+		super(nombre,apellidopaterno,apellidomaterno,mediocontacto,id);
 		this.especialidad=especialidad;
-		this.nombrehospital=nombrehospital;
+		this.fechanacimiento=fechanacimiento;
 		this.direccionhospital=direccionhospital;
+                this.nombrehospital=nombrehospital;
 	}
 	
 	public void setFechaNacimiento(String fechanacimiento){

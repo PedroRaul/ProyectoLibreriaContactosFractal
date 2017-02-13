@@ -1,9 +1,6 @@
 //
 package proyectolibreriacontactosfractal;
 
-
-
-
 public class Persona extends Contacto{
 	
 	protected static String domicilio="";
@@ -15,8 +12,8 @@ public class Persona extends Contacto{
 	}
 	
 	public Persona(String nombre,String apellidopaterno, String apellidomaterno,
-				   String telefonocasa,String telefonocelular,String email,String domicilio,String contactopreferido,String ocupacion){
-		super(nombre,apellidopaterno,apellidomaterno,telefonocasa,telefonocelular,email);
+				   String mediocontacto,int idpersonal,String domicilio,String contactopreferido,String ocupacion){
+		super(nombre,apellidopaterno,apellidomaterno,mediocontacto,idpersonal);
 		this.domicilio=domicilio;
 		this.contactopreferido=contactopreferido;
 		this.ocupacion=ocupacion;

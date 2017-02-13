@@ -16,10 +16,10 @@ public class Licenciado extends Contacto
 	}
 
 	public Licenciado(String nombre,String apellidopaterno, String apellidomaterno,
-		String telefonocasa,String telefonocelular,String email, String telefonooficina,
+		String mediocontacto,int persona, String telefonooficina,
 		String horarioatencioninicio, String horarioatencionfin)
 	{
-		super(nombre,apellidopaterno,apellidomaterno,telefonocasa,telefonocelular,email);
+		super(nombre,apellidopaterno,apellidomaterno,mediocontacto,idpersonal);
 		this.telefonooficina=telefonooficina;
 		this.horarioatencioninicio=horarioatencioninicio;
 		this.horarioatencionfin=horarioatencionfin;

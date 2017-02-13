@@ -6,11 +6,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 import static proyectolibreriacontactosfractal.BusquedaDatos.conexion;
+import static proyectolibreriacontactosfractal.LibreriaContactosApp.mostrarMenuPrincipal;
 
 public class BusquedaDatos {
     
     private static Contacto contacto;
     private static Contacto valorentrada;
+    private static String valorprofesion;
     public static conexion conexion;
     private static String valoreleccion;
     private static String nombrecontacto;
@@ -56,20 +58,27 @@ public class BusquedaDatos {
         apellidomaternocontacto=Mensajes.mostrarDialogoCapturaString("Apellido Materno");
 	try{
             PreparedStatement consulta;
-            consulta = conexion.getConnection().prepareStatement("SELECT Nombre, ApePa, ApeMa,Genero,FechaNac,Deporte FROM Deportista WHERE Nombre = '"+nombrecontacto+"' and ApePa='"+apellidopaternocontacto+"' and ApeMa='"+apellidomaternocontacto+"'");
+            consulta = conexion.getConnection().prepareStatement("SELECT Nombre, ApePa, ApeMa,IdPersona,Genero,FechaNac,Deporte FROM Deportista WHERE Nombre = '"+nombrecontacto+"' and ApePa='"+apellidopaternocontacto+"' and ApeMa='"+apellidomaternocontacto+"'");
             ResultSet resultadoquery = consulta.executeQuery();
             while(resultadoquery.next()){
                 contacto.setNombre(resultadoquery.getString("Nombre"));
 		contacto.setApellidoPaterno(resultadoquery.getString("ApePa"));
 		contacto.setApellidoMaterno(resultadoquery.getString("ApeMa"));
+                contacto.setIdPersonal(resultadoquery.getInt("IdPersona"));
                 ((Deportista)contacto).setGenero(resultadoquery.getString("Genero"));
                 ((Deportista)contacto).setFechaNacimiento(resultadoquery.getString("FechaNac"));
                 ((Deportista)contacto).setDeporte(resultadoquery.getString("Deporte"));
             }
-                Mensajes.mostrarDialogo("Nombre="+contacto.getNombre()+"\nApellidoPaterno="
+            consulta=conexion.getConnection().prepareStatement("SELECT Contactos FROM Contacto WHERE IdPersona = '"+contacto.getIdPersona()+"' and Profesion='Deportista'");
+            resultadoquery = consulta.executeQuery(); 
+            
+            while(resultadoquery.next()){
+                contacto.setMedioContacto(resultadoquery.getString("Contactos"));
+            }
+            Mensajes.mostrarDialogo("Nombre="+contacto.getNombre()+"\nApellidoPaterno="
                     +contacto.getApellidoPaterno()+"\nApellidoMaterno="+contacto.getApellidoMaterno()
                     +"\nGenero="+((Deportista)contacto).getGenero()+"\nFecha de Nacimiento="
-                    +((Deportista)contacto).getFechaNacimiento()+"\nDeporte="+((Deportista)contacto).getDeporte());
+                    +((Deportista)contacto).getFechaNacimiento()+"\nDeporte="+((Deportista)contacto).getDeporte()+"\nContactos="+contacto.getMedioContacto());
             
             consulta.close();
             resultadoquery.close();
@@ -78,7 +87,7 @@ public class BusquedaDatos {
             Mensajes.mostrarDialogo("Error, no se conectó");
             System.out.println(e);
 	}
-        LibreriaContactosApp.mostrarMenuPrincipal();
+        Restaurar("Deportista");
     }
 //-----------------------------------------------------------------------------------------    
     public static void buscarDoctor(String valorentrada){
@@ -90,22 +99,28 @@ public class BusquedaDatos {
         apellidomaternocontacto=Mensajes.mostrarDialogoCapturaString("Apellido Materno");
         try{
             PreparedStatement consulta;
-            consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,FechaNac,Especialidad,NombreH,DireccionH from Doctor WHERE Nombre = '"+nombrecontacto+"' and ApePa='"+apellidopaternocontacto+"' and ApeMa='"+apellidomaternocontacto+"'");
+            consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,IdPersona,FechaNac,Especialidad,NombreH,DireccionH from Doctor WHERE Nombre = '"+nombrecontacto+"' and ApePa='"+apellidopaternocontacto+"' and ApeMa='"+apellidomaternocontacto+"'");
             ResultSet resultadoquery = consulta.executeQuery();
             while(resultadoquery.next()){
                 contacto.setNombre(resultadoquery.getString("Nombre"));
                 contacto.setApellidoPaterno(resultadoquery.getString("ApePa"));
                 contacto.setApellidoMaterno(resultadoquery.getString("ApeMa"));
+                contacto.setIdPersonal(resultadoquery.getInt("IdPersona"));
                 ((Doctor)contacto).setFechaNacimiento(resultadoquery.getString("FechaNac"));
                 ((Doctor)contacto).setEspecialidad(resultadoquery.getString("Especialidad"));
                 ((Doctor)contacto).setNombreHospital(resultadoquery.getString("NombreH"));
                 ((Doctor)contacto).setDireccionHospital(resultadoquery.getString("DireccionH"));
             }
+            consulta=conexion.getConnection().prepareStatement("SELECT Contactos FROM Contacto WHERE IdPersona = '"+contacto.getIdPersona()+"' and Profesion='Doctor'");
+            resultadoquery = consulta.executeQuery(); 
+            while(resultadoquery.next()){
+                contacto.setMedioContacto(resultadoquery.getString("Contactos"));
+            }
             Mensajes.mostrarDialogo("Nombre="+contacto.getNombre()+"\nApellidoPaterno="
                     +contacto.getApellidoPaterno()+"\nApellidoMaterno="+contacto.getApellidoMaterno()
                     +"\nFecha de Nacimiento="+((Doctor)contacto).getFechaNacimiento()+"\nEspecialidad="
                     +((Doctor)contacto).getEspecialidad()+"\nNombre del Hospital="+((Doctor)contacto).getNombreHospital()
-                    +"\nDireccion del Hospital="+((Doctor)contacto).getDireccionHospital());
+                    +"\nDireccion del Hospital="+((Doctor)contacto).getDireccionHospital()+"\nContactos="+contacto.getMedioContacto());
             
             consulta.close();
             resultadoquery.close();
@@ -114,7 +129,7 @@ public class BusquedaDatos {
             Mensajes.mostrarDialogo("Error, no se conectó");
             System.out.println(e);
 	}
-        LibreriaContactosApp.mostrarMenuPrincipal();
+        Restaurar("Doctor");
     }
 //-----------------------------------------------------------------------------------------    
     public static void buscarEstudiante(String valorentrada){
@@ -126,22 +141,28 @@ public class BusquedaDatos {
         apellidomaternocontacto=Mensajes.mostrarDialogoCapturaString("Apellido Materno");
         try{
             PreparedStatement consulta;
-            consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,LugarNac,FechaNac,Carrera,Email from Estudiante WHERE Nombre = '"+nombrecontacto+"' and ApePa='"+apellidopaternocontacto+"' and ApeMa='"+apellidomaternocontacto+"'");
+            consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,IdPersona,LugarNac,FechaNac,Carrera,Email from Estudiante WHERE Nombre = '"+nombrecontacto+"' and ApePa='"+apellidopaternocontacto+"' and ApeMa='"+apellidomaternocontacto+"'");
             ResultSet resultadoquery = consulta.executeQuery();
             while(resultadoquery.next()){
                 contacto.setNombre(resultadoquery.getString("Nombre"));
 		contacto.setApellidoPaterno(resultadoquery.getString("ApePa"));
 		contacto.setApellidoMaterno(resultadoquery.getString("ApeMa"));
+                contacto.setIdPersonal(resultadoquery.getInt("IdPersona"));
                 ((Estudiante)contacto).setLugarNacimiento(resultadoquery.getString("LugarNac"));
                 ((Estudiante)contacto).setFechaNacimiento(resultadoquery.getString("FechaNac"));
                 ((Estudiante)contacto).setEstudiaCarrera(resultadoquery.getString("Carrera"));
                 ((Estudiante)contacto).setEmail(resultadoquery.getString("Email"));
             }
+            consulta=conexion.getConnection().prepareStatement("SELECT Contactos FROM Contacto WHERE IdPersona = '"+contacto.getIdPersona()+"' and Profesion='Estudiante'");
+            resultadoquery = consulta.executeQuery(); 
+            while(resultadoquery.next()){
+                contacto.setMedioContacto(resultadoquery.getString("Contactos"));
+            }
             Mensajes.mostrarDialogo("Nombre="+contacto.getNombre()+"\nApellidoPaterno="
                     +contacto.getApellidoPaterno()+"\nApellidoMaterno="+contacto.getApellidoMaterno()
                     +"\nLugar de Nacimiento="+((Estudiante)contacto).getLugarNacimento()+"\nFecha de Nacimiento="
                     +((Estudiante)contacto).getFechaNacimiento()+"\nCarrera="+((Estudiante)contacto).getEstudiaCarrera()
-                    +"\nEmail="+((Estudiante)contacto).getEmail());
+                    +"\nEmail="+((Estudiante)contacto).getEmail()+"\nContactos="+contacto.getMedioContacto());
             
             consulta.close();
             resultadoquery.close();
@@ -150,7 +171,7 @@ public class BusquedaDatos {
             Mensajes.mostrarDialogo("Error, no se conectó");
             System.out.println(e);
 	}
-        LibreriaContactosApp.mostrarMenuPrincipal();
+        Restaurar("Estudiante");
     }
 //-----------------------------------------------------------------------------------------    
     public static void buscarLicenciado(String valorentrada){
@@ -162,20 +183,26 @@ public class BusquedaDatos {
         apellidomaternocontacto=Mensajes.mostrarDialogoCapturaString("Apellido Materno");
         try{
             PreparedStatement consulta;
-            consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,TelOficina,HorarioIn,HorarioFin from Licenciado WHERE Nombre = '"+nombrecontacto+"' and ApePa='"+apellidopaternocontacto+"' and ApeMa='"+apellidomaternocontacto+"'");
+            consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,IdPersona,TelOficina,HorarioIn,HorarioFin from Licenciado WHERE Nombre = '"+nombrecontacto+"' and ApePa='"+apellidopaternocontacto+"' and ApeMa='"+apellidomaternocontacto+"'");
             ResultSet resultadoquery = consulta.executeQuery();
             while(resultadoquery.next()){
                 contacto.setNombre(resultadoquery.getString("Nombre"));
 		contacto.setApellidoPaterno(resultadoquery.getString("ApePa"));
 		contacto.setApellidoMaterno(resultadoquery.getString("ApeMa"));
+                contacto.setIdPersonal(resultadoquery.getInt("IdPersona"));
                 ((Licenciado)contacto).setTelefonoOficina(resultadoquery.getString("TelOficina"));
                 ((Licenciado)contacto).setHorarioAtencionInicio(resultadoquery.getString("HorarioIn"));
                 ((Licenciado)contacto).setHorarioAtencionFin(resultadoquery.getString("HorarioFin"));
             }
+            consulta=conexion.getConnection().prepareStatement("SELECT Contactos FROM Contacto WHERE IdPersona = '"+contacto.getIdPersona()+"' and Profesion='Licenciado'");
+            resultadoquery = consulta.executeQuery(); 
+            while(resultadoquery.next()){
+                contacto.setMedioContacto(resultadoquery.getString("Contactos"));
+            }
             Mensajes.mostrarDialogo("Nombre="+contacto.getNombre()+"\nApellidoPaterno="
                     +contacto.getApellidoPaterno()+"\nApellidoMaterno="+contacto.getApellidoMaterno()
                     +"\nTelefono de Oficina="+((Licenciado)contacto).getTelefonoOficina()+"\nHorario de Atencion="
-                    +((Licenciado)contacto).getHorarioAtencionInicio()+" a "+((Licenciado)contacto).getHorarioAtencionFin());
+                    +((Licenciado)contacto).getHorarioAtencionInicio()+" a "+((Licenciado)contacto).getHorarioAtencionFin()+"\nContactos="+contacto.getMedioContacto());
             
             consulta.close();
             resultadoquery.close();
@@ -184,7 +211,7 @@ public class BusquedaDatos {
             Mensajes.mostrarDialogo("Error, no se conectó");
             System.out.println(e);
 	}
-        LibreriaContactosApp.mostrarMenuPrincipal();
+        Restaurar("Licenciado");
     }
 //-----------------------------------------------------------------------------------------    
     public static void buscarPersona(String valorentrada){
@@ -196,20 +223,26 @@ public class BusquedaDatos {
         apellidomaternocontacto=Mensajes.mostrarDialogoCapturaString("Apellido Materno");
         try{
             PreparedStatement consulta;
-            consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,Domicilio,MedioPreferido,Ocupacion from Persona WHERE Nombre = '"+nombrecontacto+"' and ApePa='"+apellidopaternocontacto+"' and ApeMa='"+apellidomaternocontacto+"'");
+            consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,IdPersona,Domicilio,MedioPreferido,Ocupacion from Persona WHERE Nombre = '"+nombrecontacto+"' and ApePa='"+apellidopaternocontacto+"' and ApeMa='"+apellidomaternocontacto+"'");
             ResultSet resultadoquery = consulta.executeQuery();
             while(resultadoquery.next()){
                 contacto.setNombre(resultadoquery.getString("Nombre"));
 		contacto.setApellidoPaterno(resultadoquery.getString("ApePa"));
 		contacto.setApellidoMaterno(resultadoquery.getString("ApeMa"));
+                contacto.setIdPersonal(resultadoquery.getInt("IdPersona"));
                 ((Persona)contacto).setDomicilio(resultadoquery.getString("Domicilio"));
                 ((Persona)contacto).setContactoPreferido(resultadoquery.getString("MedioPreferido"));
                 ((Persona)contacto).setOcupacion(resultadoquery.getString("Ocupacion"));
             }
+            consulta=conexion.getConnection().prepareStatement("SELECT Contactos FROM Contacto WHERE IdPersona = '"+contacto.getIdPersona()+"' and Profesion='Persona'");
+            resultadoquery = consulta.executeQuery(); 
+            while(resultadoquery.next()){
+                contacto.setMedioContacto(resultadoquery.getString("Contactos"));
+            }
             Mensajes.mostrarDialogo("Nombre="+contacto.getNombre()+"\nApellidoPaterno="
                     +contacto.getApellidoPaterno()+"\nApellidoMaterno="+contacto.getApellidoMaterno()
                     +"\nDomicilio="+((Persona)contacto).getDomicilio()+"\nMedio de Contacto Preferido="
-                    +((Persona)contacto).getContactoPreferido()+"\nOcupacion="+((Persona)contacto).getOcupacion());
+                    +((Persona)contacto).getContactoPreferido()+"\nOcupacion="+((Persona)contacto).getOcupacion()+"\nContactos="+contacto.getMedioContacto());
             
             consulta.close();
             resultadoquery.close();
@@ -218,7 +251,7 @@ public class BusquedaDatos {
             Mensajes.mostrarDialogo("Error, no se conectó");
             System.out.println(e);
 	}
-        LibreriaContactosApp.mostrarMenuPrincipal();
+        Restaurar("Persona");
     }
 //-----------------------------------------------------------------------------------------
     public static void buscarDeportistaManual(String valorentrada){//Este Metodo busca todo registro de la tabla y lo muestra en consola
@@ -234,34 +267,39 @@ public class BusquedaDatos {
             resultadoquerycontador.next();
             int NR = resultadoquerycontador.getInt ("count(*)");
             //--------------------------
-            //String array[] = new String[NR];
             for(int j=1;j<=NR;j++){
                 PreparedStatement consulta;
-                consulta = conexion.getConnection().prepareStatement("SELECT Nombre, ApePa, ApeMa,Genero,FechaNac,Deporte FROM Deportista where IdPersona='"+j+"' ");
+                consulta = conexion.getConnection().prepareStatement("SELECT Nombre, ApePa, ApeMa,IdPersona,Genero,FechaNac,Deporte FROM Deportista where IdPersona='"+j+"' ");
                 ResultSet resultadoquery = consulta.executeQuery();
                 while(resultadoquery.next()){
                     contacto.setNombre(resultadoquery.getString("Nombre"));
                     contacto.setApellidoPaterno(resultadoquery.getString("ApePa"));
                     contacto.setApellidoMaterno(resultadoquery.getString("ApeMa"));
+                    contacto.setIdPersonal(resultadoquery.getInt("IdPersona"));
                     ((Deportista)contacto).setGenero(resultadoquery.getString("Genero"));
                     ((Deportista)contacto).setFechaNacimiento(resultadoquery.getString("FechaNac"));
                     ((Deportista)contacto).setDeporte(resultadoquery.getString("Deporte"));
                 }
-                
+                consulta=conexion.getConnection().prepareStatement("SELECT Contactos FROM Contacto WHERE IdPersona = '"+contacto.getIdPersona()+"' and Profesion='Deportista'");
+                resultadoquery = consulta.executeQuery(); 
+                while(resultadoquery.next()){
+                    contacto.setMedioContacto(resultadoquery.getString("Contactos"));
+                }
                 Mensajes.mostrarDialogo("---------------------------"+"\nNombre="+contacto.getNombre()+"\nApellidoPaterno="
                     +contacto.getApellidoPaterno()+"\nApellidoMaterno="+contacto.getApellidoMaterno()
                     +"\nGenero="+((Deportista)contacto).getGenero()+"\nFecha de Nacimiento="
-                    +((Deportista)contacto).getFechaNacimiento()+"\nDeporte="+((Deportista)contacto).getDeporte()
+                    +((Deportista)contacto).getFechaNacimiento()+"\nDeporte="+((Deportista)contacto).getDeporte()+"\nContactos="+contacto.getMedioContacto()
                         +"\n---------------------------");
                 consulta.close();
                 resultadoquery.close();
+                contacto.setMedioContacto("");
             }
             conexion.desconectar();
             } catch (SQLException e){
             Mensajes.mostrarDialogo("Error, no se conectó");
             System.out.println(e);
 	}
-        LibreriaContactosApp.mostrarMenuPrincipal();
+        Restaurar("Deportista");
     }
 //-----------------------------------------------------------------------------------------    
     public static void buscarDoctorManual(String valorentrada){//Este Metodo busca todo registro de la tabla y lo muestra en consola
@@ -277,34 +315,40 @@ public class BusquedaDatos {
             resultadoquerycontador.next();
             int NR = resultadoquerycontador.getInt ("count(*)");
             //--------------------------
-            //String array[] = new String[NR];
             for(int j=1;j<=NR;j++){
                 PreparedStatement consulta;
-                consulta = conexion.getConnection().prepareStatement("SELECT Nombre, ApePa, ApeMa,FechaNac,Especialidad,NombreH,DireccionH FROM Doctor where IdPersona='"+j+"' ");
+                consulta = conexion.getConnection().prepareStatement("SELECT Nombre, ApePa, ApeMa,IdPersona,FechaNac,Especialidad,NombreH,DireccionH FROM Doctor where IdPersona='"+j+"' ");
                 ResultSet resultadoquery = consulta.executeQuery();
                 while(resultadoquery.next()){
                 contacto.setNombre(resultadoquery.getString("Nombre"));
                 contacto.setApellidoPaterno(resultadoquery.getString("ApePa"));
                 contacto.setApellidoMaterno(resultadoquery.getString("ApeMa"));
+                contacto.setIdPersonal(resultadoquery.getInt("IdPersona"));
                 ((Doctor)contacto).setFechaNacimiento(resultadoquery.getString("FechaNac"));
                 ((Doctor)contacto).setEspecialidad(resultadoquery.getString("Especialidad"));
                 ((Doctor)contacto).setNombreHospital(resultadoquery.getString("NombreH"));
                 ((Doctor)contacto).setDireccionHospital(resultadoquery.getString("DireccionH"));
             }
+                consulta=conexion.getConnection().prepareStatement("SELECT Contactos FROM Contacto WHERE IdPersona = '"+contacto.getIdPersona()+"' and Profesion='Doctor'");
+                resultadoquery = consulta.executeQuery(); 
+                while(resultadoquery.next()){
+                    contacto.setMedioContacto(resultadoquery.getString("Contactos"));
+                }
             Mensajes.mostrarDialogo("---------------------------"+"\nNombre="+contacto.getNombre()+"\nApellidoPaterno="
                     +contacto.getApellidoPaterno()+"\nApellidoMaterno="+contacto.getApellidoMaterno()
                     +"\nFecha de Nacimiento="+((Doctor)contacto).getFechaNacimiento()+"\nEspecialidad="
                     +((Doctor)contacto).getEspecialidad()+"\nNombre del Hospital="+((Doctor)contacto).getNombreHospital()
-                    +"\nDireccion del Hospital="+((Doctor)contacto).getDireccionHospital());
+                    +"\nDireccion del Hospital="+((Doctor)contacto).getDireccionHospital()+"\nContactos="+contacto.getMedioContacto());
                 consulta.close();
                 resultadoquery.close();
+                contacto.setMedioContacto("");
             }
             conexion.desconectar();//
             } catch (SQLException e){
             Mensajes.mostrarDialogo("Error, no se conectó");
             System.out.println(e);
 	}
-        LibreriaContactosApp.mostrarMenuPrincipal();
+        Restaurar("Doctor");
     }
 //-----------------------------------------------------------------------------------------    
     public static void buscarEstudianteManual(String valorentrada){//Este Metodo busca todo registro de la tabla y lo muestra en consola
@@ -320,34 +364,40 @@ public class BusquedaDatos {
             resultadoquerycontador.next();
             int NR = resultadoquerycontador.getInt ("count(*)");
             //--------------------------
-            //String array[] = new String[NR];
             for(int j=1;j<=NR;j++){
                 PreparedStatement consulta;
-                consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,LugarNac,FechaNac,Carrera,Email from Estudiante WHERE Nombre = '"+nombrecontacto+"' and ApePa='"+apellidopaternocontacto+"' and ApeMa='"+apellidomaternocontacto+"'");
+                consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,IdPersona,LugarNac,FechaNac,Carrera,Email from Estudiante WHERE IdPersona='"+j+"' ");
                 ResultSet resultadoquery = consulta.executeQuery();
             while(resultadoquery.next()){
                 contacto.setNombre(resultadoquery.getString("Nombre"));
 		contacto.setApellidoPaterno(resultadoquery.getString("ApePa"));
 		contacto.setApellidoMaterno(resultadoquery.getString("ApeMa"));
+                contacto.setIdPersonal(resultadoquery.getInt("IdPersona"));
                 ((Estudiante)contacto).setLugarNacimiento(resultadoquery.getString("LugarNac"));
                 ((Estudiante)contacto).setFechaNacimiento(resultadoquery.getString("FechaNac"));
                 ((Estudiante)contacto).setEstudiaCarrera(resultadoquery.getString("Carrera"));
                 ((Estudiante)contacto).setEmail(resultadoquery.getString("Email"));
             }
+                consulta=conexion.getConnection().prepareStatement("SELECT Contactos FROM Contacto WHERE IdPersona = '"+contacto.getIdPersona()+"' and Profesion='Estudiante'");
+                resultadoquery = consulta.executeQuery(); 
+                while(resultadoquery.next()){
+                    contacto.setMedioContacto(resultadoquery.getString("Contactos"));
+                }
                 Mensajes.mostrarDialogo("---------------------------"+"\nNombre="+contacto.getNombre()+"\nApellidoPaterno="
                     +contacto.getApellidoPaterno()+"\nApellidoMaterno="+contacto.getApellidoMaterno()
                     +"\nLugar de Nacimiento="+((Estudiante)contacto).getLugarNacimento()+"\nFecha de Nacimiento="
                     +((Estudiante)contacto).getFechaNacimiento()+"\nCarrera="+((Estudiante)contacto).getEstudiaCarrera()
-                    +"\nEmail="+((Estudiante)contacto).getEmail());
+                    +"\nEmail="+((Estudiante)contacto).getEmail()+"\nContactos="+contacto.getMedioContacto());
                 consulta.close();
                 resultadoquery.close();
+                contacto.setMedioContacto("");
             }
             conexion.desconectar();
             } catch (SQLException e){
             Mensajes.mostrarDialogo("Error, no se conectó");
             System.out.println(e);
 	}
-        LibreriaContactosApp.mostrarMenuPrincipal();
+        Restaurar("Estudiante");
     }
  //-----------------------------------------------------------------------------------------   
     public static void buscarLicenciadoManual(String valorentrada){//Este Metodo busca todo registro de la tabla y lo muestra en consola
@@ -363,32 +413,38 @@ public class BusquedaDatos {
             resultadoquerycontador.next();
             int NR = resultadoquerycontador.getInt ("count(*)");
             //--------------------------
-            //String array[] = new String[NR];
             for(int j=1;j<=NR;j++){
                 PreparedStatement consulta;
-            consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,TelOficina,HorarioIn,HorarioFin from Licenciado WHERE Nombre = '"+nombrecontacto+"' and ApePa='"+apellidopaternocontacto+"' and ApeMa='"+apellidomaternocontacto+"'");
+            consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,IdPersona,TelOficina,HorarioIn,HorarioFin from Licenciado WHERE IdPersona='"+j+"' ");
             ResultSet resultadoquery = consulta.executeQuery();
             while(resultadoquery.next()){
                 contacto.setNombre(resultadoquery.getString("Nombre"));
 		contacto.setApellidoPaterno(resultadoquery.getString("ApePa"));
 		contacto.setApellidoMaterno(resultadoquery.getString("ApeMa"));
+                contacto.setIdPersonal(resultadoquery.getInt("IdPersona"));
                 ((Licenciado)contacto).setTelefonoOficina(resultadoquery.getString("TelOficina"));
                 ((Licenciado)contacto).setHorarioAtencionInicio(resultadoquery.getString("HorarioIn"));
                 ((Licenciado)contacto).setHorarioAtencionFin(resultadoquery.getString("HorarioFin"));
             }
+            consulta=conexion.getConnection().prepareStatement("SELECT Contactos FROM Contacto WHERE IdPersona = '"+contacto.getIdPersona()+"' and Profesion='Licenciado'");
+            resultadoquery = consulta.executeQuery(); 
+            while(resultadoquery.next()){
+                contacto.setMedioContacto(resultadoquery.getString("Contactos"));
+            }
             Mensajes.mostrarDialogo("---------------------------"+"\nNombre="+contacto.getNombre()+"\nApellidoPaterno="
                     +contacto.getApellidoPaterno()+"\nApellidoMaterno="+contacto.getApellidoMaterno()
                     +"\nTelefono de Oficina="+((Licenciado)contacto).getTelefonoOficina()+"\nHorario de Atencion="
-                    +((Licenciado)contacto).getHorarioAtencionInicio()+" a "+((Licenciado)contacto).getHorarioAtencionFin());
+                    +((Licenciado)contacto).getHorarioAtencionInicio()+" a "+((Licenciado)contacto).getHorarioAtencionFin()+"\nContactos="+contacto.getMedioContacto());
                 consulta.close();
                 resultadoquery.close();
+                contacto.setMedioContacto("");
             }
             conexion.desconectar();
             } catch (SQLException e){
             Mensajes.mostrarDialogo("Error, no se conectó");
             System.out.println(e);
 	}
-        LibreriaContactosApp.mostrarMenuPrincipal();
+        Restaurar("Licenciado");
     }
 //-----------------------------------------------------------------------------------------    
     public static void buscarPersonaManual(String valorentrada){//Este Metodo busca todo registro de la tabla y lo muestra en consola
@@ -404,36 +460,47 @@ public class BusquedaDatos {
             resultadoquerycontador.next();
             int NR = resultadoquerycontador.getInt ("count(*)");
             //--------------------------
-            //String array[] = new String[NR];
             for(int j=1;j<=NR;j++){
                 PreparedStatement consulta;
-            consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,Domicilio,MedioPreferido,Ocupacion from Persona WHERE Nombre = '"+nombrecontacto+"' and ApePa='"+apellidopaternocontacto+"' and ApeMa='"+apellidomaternocontacto+"'");
-            ResultSet resultadoquery = consulta.executeQuery();
+                consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,IdPersona,Domicilio,MedioPreferido,Ocupacion from Persona WHERE IdPersona='"+j+"' ");
+                ResultSet resultadoquery = consulta.executeQuery();
             while(resultadoquery.next()){
                 contacto.setNombre(resultadoquery.getString("Nombre"));
 		contacto.setApellidoPaterno(resultadoquery.getString("ApePa"));
 		contacto.setApellidoMaterno(resultadoquery.getString("ApeMa"));
+                contacto.setIdPersonal(resultadoquery.getInt("IdPersona"));
                 ((Persona)contacto).setDomicilio(resultadoquery.getString("Domicilio"));
                 ((Persona)contacto).setContactoPreferido(resultadoquery.getString("MedioPreferido"));
                 ((Persona)contacto).setOcupacion(resultadoquery.getString("Ocupacion"));
             }
-            Mensajes.mostrarDialogo("---------------------------"+"\nNombre="+contacto.getNombre()+"\nApellidoPaterno="
+            consulta=conexion.getConnection().prepareStatement("SELECT Contactos FROM Contacto WHERE IdPersona = '"+contacto.getIdPersona()+"' and Profesion='Persona'");
+                resultadoquery = consulta.executeQuery(); 
+                while(resultadoquery.next()){
+                    contacto.setMedioContacto(resultadoquery.getString("Contactos"));
+                }
+                Mensajes.mostrarDialogo("---------------------------"+"\nNombre="+contacto.getNombre()+"\nApellidoPaterno="
                     +contacto.getApellidoPaterno()+"\nApellidoMaterno="+contacto.getApellidoMaterno()
                     +"\nDomicilio="+((Persona)contacto).getDomicilio()+"\nMedio de Contacto Preferido="
-                    +((Persona)contacto).getContactoPreferido()+"\nOcupacion="+((Persona)contacto).getOcupacion());
-                consulta.close();
-                resultadoquery.close();
+                    +((Persona)contacto).getContactoPreferido()+"\nOcupacion="+((Persona)contacto).getOcupacion()+"\nContactos="+contacto.getMedioContacto());
+                //---------------
+            consulta.close();
+            resultadoquery.close();
+            contacto.setMedioContacto("");
             }
             conexion.desconectar();
             } catch (SQLException e){
             Mensajes.mostrarDialogo("Error, no se conectó");
             System.out.println(e);
 	}
-        LibreriaContactosApp.mostrarMenuPrincipal();
+        Restaurar("Persona");
     }
  //-----------------------------------------------------------------------------------------   
     public static void menuEleccionDeportista(String valorentrada){
         valoreleccion=Mensajes.mostrarDialogoCapturaString("INGRESA EL NUMERO COMO DESEAS BUSCAR...\n\n1-Buscar Por Nombre\n2-Buscar Todo");
+        if(valoreleccion==null)
+        {
+           mostrarMenuPrincipal();
+        }
         switch(valoreleccion){
             case "1":
                 BusquedaDatos.buscarDeportista(valorentrada);
@@ -441,11 +508,18 @@ public class BusquedaDatos {
             case"2":
                 BusquedaDatos.buscarDeportistaManual(valorentrada);
             break;
+            default :
+                BusquedaDatos.menuEleccionDoctor(valorentrada);
+            break;    
         }
     }
-    
     public static void menuEleccionDoctor(String valorentrada){
         valoreleccion=Mensajes.mostrarDialogoCapturaString("INGRESA EL NUMERO COMO DESEAS BUSCAR...\n\n1-Buscar Por Nombre\n2-Buscar Todo");
+        
+        if(valoreleccion==null)
+        {
+           mostrarMenuPrincipal();
+        }
         switch(valoreleccion){
             case "1":
                 BusquedaDatos.buscarDoctor(valorentrada);
@@ -453,11 +527,16 @@ public class BusquedaDatos {
             case"2":
                 BusquedaDatos.buscarDoctorManual(valorentrada);
             break;
+            default : BusquedaDatos.menuEleccionDoctor(valorentrada);
+            break;
         }
     }
-    
     public static void menuEleccionEstudiante(String valorentrada){
         valoreleccion=Mensajes.mostrarDialogoCapturaString("INGRESA EL NUMERO COMO DESEAS BUSCAR...\n\n1-Buscar Por Nombre\n2-Buscar Todo");
+        if(valoreleccion==null)
+        {
+           mostrarMenuPrincipal();
+        }
         switch(valoreleccion){
             case "1":
                 BusquedaDatos.buscarEstudiante(valorentrada);
@@ -465,11 +544,16 @@ public class BusquedaDatos {
             case"2":
                 BusquedaDatos.buscarEstudianteManual(valorentrada);
             break;
+            default : BusquedaDatos.menuEleccionDoctor(valorentrada);
+            break;    
         }
     }
-    
     public static void menuEleccionLicenciado(String valorentrada){
         valoreleccion=Mensajes.mostrarDialogoCapturaString("INGRESA EL NUMERO COMO DESEAS BUSCAR...\n\n1-Buscar Por Nombre\n2-Buscar Todo");
+        if(valoreleccion==null)
+        {
+           mostrarMenuPrincipal();
+        }
         switch(valoreleccion){
             case "1":
                 BusquedaDatos.buscarLicenciado(valorentrada);
@@ -477,11 +561,16 @@ public class BusquedaDatos {
             case"2":
                 BusquedaDatos.buscarLicenciadoManual(valorentrada);
             break;
+            default : BusquedaDatos.menuEleccionDoctor(valorentrada);
+            break;    
         }
     }
-    
     public static void menuEleccionPersona(String valorentrada){
         valoreleccion=Mensajes.mostrarDialogoCapturaString("INGRESA EL NUMERO COMO DESEAS BUSCAR...\n\n1-Buscar Por Nombre\n2-Buscar Todo");
+        if(valoreleccion==null)
+        {
+           mostrarMenuPrincipal();
+        }
         switch(valoreleccion){
             case "1":
                 BusquedaDatos.buscarPersona(valorentrada);
@@ -489,6 +578,55 @@ public class BusquedaDatos {
             case"2":
                 BusquedaDatos.buscarPersonaManual(valorentrada);
             break;
+            default : BusquedaDatos.menuEleccionDoctor(valorentrada);
+            break;    
         }
+    }
+    public static void Restaurar(String valorprofesion){
+        contacto.setNombre("");
+        contacto.setApellidoPaterno("");
+        contacto.setApellidoMaterno("");
+        contacto.setIdPersonal(0);
+        contacto.setMedioContacto("");
+        
+        switch(valorprofesion){
+            case"Deportista":deportistaReset();
+                break;
+            case"Doctor":doctorReset();
+                break;
+            case"Estudiante":estudianteReset();
+                break;
+            case"Licenciado":licenciadoReset();
+                break;
+            case"Persona":personaReset();
+                break;
+        }
+        LibreriaContactosApp.mostrarMenuPrincipal();
+    }
+    public static void deportistaReset(){
+        ((Deportista)contacto).setGenero("");
+        ((Deportista)contacto).setFechaNacimiento("");
+        ((Deportista)contacto).setDeporte("");
+    }
+    public static void doctorReset(){
+        ((Doctor)contacto).setFechaNacimiento("");
+        ((Doctor)contacto).setEspecialidad("");
+        ((Doctor)contacto).setNombreHospital("");
+    }
+    public static void estudianteReset(){
+        ((Estudiante)contacto).setLugarNacimiento("");
+        ((Estudiante)contacto).setFechaNacimiento("");
+        ((Estudiante)contacto).setEstudiaCarrera("");
+        ((Estudiante)contacto).setEmail("");
+    }
+    public static void licenciadoReset(){
+        ((Licenciado)contacto).setTelefonoOficina("");
+        ((Licenciado)contacto).setHorarioAtencionInicio("");
+        ((Licenciado)contacto).setHorarioAtencionFin("");
+    }
+    public static void personaReset(){
+        ((Persona)contacto).setDomicilio("");
+        ((Persona)contacto).setContactoPreferido("");
+        ((Persona)contacto).setOcupacion("");
     }
 }

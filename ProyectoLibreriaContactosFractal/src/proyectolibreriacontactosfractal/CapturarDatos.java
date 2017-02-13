@@ -1,4 +1,3 @@
-//
 package proyectolibreriacontactosfractal;
 
 public class CapturarDatos {
@@ -7,6 +6,7 @@ public class CapturarDatos {
    public static String querycontactos;
    public static String querymediodecontactos;
    private static int idMaximo=0;
+   private static boolean bandera=true;
     
     private static void capturaDatosContacto(String tipoContacto)
             
@@ -14,55 +14,107 @@ public class CapturarDatos {
         // se aplica polimorfismo al objeto contacto en base al valor del parametro 
         switch(tipoContacto)
         {
-            case ContactosABC.tabladeportista:
+            case "deportista":
                 contacto=new Deportista();
                 break;
-            case ContactosABC.tabladoctor:
+            case "doctor":
                 contacto=new Doctor();
                 break;
-            case ContactosABC.tablaestudiante:
+            case "estudiante":
                 contacto=new Estudiante();
                 break;
-            case ContactosABC.tablalicenciado:
+            case "licenciado":
                 contacto=new Licenciado();
                 break;
-            case ContactosABC.tablapersona:
+            case "persona":
                 contacto=new Persona();
+                break;
+           default:
+                Mensajes.mostrarDialogo("Opcion Invalida intenta de nuevo");
+                LibreriaContactosApp.mostrarMenuPrincipal();
                 break;
         }
         
         contacto.setNombre(Mensajes.mostrarDialogoCapturaString("Ingresa el nombre"));
+        if(contacto.getNombre()==null)
+         LibreriaContactosApp.mostrarMenuPrincipal();
+                 
+        while(validarCadenaVacia(contacto.getNombre()))
+        {
+            Mensajes.mostrarDialogo("No Puedes dejar este campo vacio");
+            contacto.setNombre(Mensajes.mostrarDialogoCapturaString("Ingresa el nombre"));
+        }
+        
+        
         contacto.setApellidoPaterno(Mensajes.mostrarDialogoCapturaString("Ingresa el Apellido Paterno"));
+        if(contacto.getApellidoPaterno()==null)
+        {
+             LibreriaContactosApp.mostrarMenuPrincipal();
+                 
+        }
+        while(validarCadenaVacia(contacto.getApellidoPaterno()))
+        {
+            Mensajes.mostrarDialogo("No Puedes dejar este campo vacio");
+            contacto.setApellidoPaterno(Mensajes.mostrarDialogoCapturaString("Ingresa el nombre"));
+        }
+        
+        
         contacto.setApellidoMaterno(Mensajes.mostrarDialogoCapturaString("Ingresa el Apellido Materno"));
-        contacto.setTelefonoCasa(Mensajes.mostrarDialogoCapturaString("Ingresa el telefono de casa"));
-        contacto.setTelefonoCelular(Mensajes.mostrarDialogoCapturaString("Ingresa el telefono celular"));
-        contacto.setEmail(Mensajes.mostrarDialogoCapturaString("Ingresa el email"));
+        
+        
         
     }
     
-   
-     public static void capturarDatosDeportista() {
+    public static boolean validarCadenaVacia(String cadena)
+    {
         
-        capturaDatosContacto(ContactosABC.tabladeportista);
+        if(cadena.equals(""))
+            return true;
+        else
+            return false;
+    
+    }
+    
+   
+    
+     public static void capturarDatosDeportista() {
+         
+        capturaDatosContacto("deportista");
+        idMaximo=ContactosABC.verIdMaximo("deportista")+1;
+        capturaMediosContacto("deportista",idMaximo);
+        bandera=true;
+        
+        while(bandera)
+        {
+        if(Mensajes.mostrarDialogoConfirmacionAgregarOtroMedioDeContacto())
+        {
+            capturaMediosContacto("deportista",idMaximo);
+            bandera=true;
+        }
+        else
+        {
+        bandera=false;
+        }
+        }
+        
         ((Deportista)contacto).setGenero(Mensajes.mostrarDialogoCapturaString("Ingresa el Genero"));
+        if(((Deportista)contacto).getGenero()==null)
+         LibreriaContactosApp.mostrarMenuPrincipal();
+                 
+        while(validarCadenaVacia(((Deportista)contacto).getGenero()))
+        {
+            Mensajes.mostrarDialogo("No Puedes dejar este campo vacio");
+         ((Deportista)contacto).setGenero(Mensajes.mostrarDialogoCapturaString("Ingresa el Genero"));
+        }
         ((Deportista)contacto).setFechaNacimiento(Mensajes.mostrarDialogoCapturaString("Ingresa la fecha de nacimiento"));
         ((Deportista)contacto).setDeporte(Mensajes.mostrarDialogoCapturaString("Ingresa el Deporte"));
         
-        querycontactos="INSERT INTO "+ContactosABC.tabladeportista
-                +"("+ContactosABC.camponombre+", "+ContactosABC.campoapellidopaterno
-                +","+ContactosABC.campoapellidomaterno+","+ContactosABC.campogenero
-                +","+ContactosABC.campofechadenacimiento+","+ContactosABC.campodeporte
-                +","+ContactosABC.campoprofesion+")"
+        querycontactos="INSERT INTO deportista(Nombre, ApePa,ApeMa,Genero,FechaNac,Deporte,Profesion)"
                     + " VALUES ('"+contacto.getNombre()+"','"+contacto.getApellidoPaterno()
                 +"','"+contacto.getApellidoMaterno()+"','"+((Deportista)contacto).getGenero()
                 +"','"+((Deportista)contacto).getFechaNacimiento()+"','"
-                +((Deportista)contacto).getDeporte()+"','"+ContactosABC.tabladeportista+"')";
-        
-        idMaximo=ContactosABC.verIdMaximo(ContactosABC.tabladeportista)+1;
-        querymediodecontactos="INSERT INTO contacto(`"+ContactosABC.campoidpersona+"`, `"+ContactosABC.campoprofesion+"`, `"+ContactosABC.campocontactos+"`) VALUES ("+idMaximo+",'"+ContactosABC.tabladeportista+"','"+contacto.getEmail()+"')";
-       
+                +((Deportista)contacto).getDeporte()+"','"+"deportista"+"')";
         ContactosABC.guardarDatosContacto(querycontactos);
-        ContactosABC.guardarDatosContacto(querymediodecontactos);
         
         
      }
@@ -70,102 +122,154 @@ public class CapturarDatos {
     public static void capturarDatosDoctor() {
         
         capturaDatosContacto("doctor");
+         idMaximo=ContactosABC.verIdMaximo("doctor")+1;
+        capturaMediosContacto("doctor",idMaximo);
+        bandera=true;
+        
+        while(bandera)
+        {
+        if(Mensajes.mostrarDialogoConfirmacionAgregarOtroMedioDeContacto())
+        {
+            capturaMediosContacto("doctor",idMaximo);
+            bandera=true;
+        }
+        else
+        {
+        bandera=false;
+        }
+        }
         ((Doctor)contacto).setFechaNacimiento(Mensajes.mostrarDialogoCapturaString("Ingresa la fecha de nacimiento"));
         ((Doctor)contacto).setEspecialidad(Mensajes.mostrarDialogoCapturaString("Ingresa la especialidad"));
         ((Doctor)contacto).setNombreHospital(Mensajes.mostrarDialogoCapturaString("Ingresa el Nombre del hospital donde ejerce"));
         ((Doctor)contacto).setDireccionHospital(Mensajes.mostrarDialogoCapturaString("Ingresa la direccion del hospital donde ejerce"));
         
-        querycontactos="INSERT INTO "+ContactosABC.tabladoctor
-                +"("+ContactosABC.camponombre+", "+ContactosABC.campoapellidopaterno+","
-                +ContactosABC.campoapellidomaterno+","+ContactosABC.campofechadenacimiento+","
-                +ContactosABC.campoespecialidad+","+ContactosABC.camponombrehospital+","
-                +ContactosABC.campodireccionhospital+","+ContactosABC.campoprofesion+")"
+       querycontactos="INSERT INTO doctor(Nombre, ApePa,ApeMa,FechaNac,Especialidad,NombreH,DireccionH,Profesion)"
                     + " VALUES ('"+contacto.getNombre()+"','"+contacto.getApellidoPaterno()
                 +"','"+contacto.getApellidoMaterno()+"','"+((Doctor)contacto).getFechaNacimiento()
                 +"','"+((Doctor)contacto).getEspecialidad()+"','"+((Doctor)contacto).getNombreHospital()
-                +"','"+((Doctor)contacto).getDireccionHospital()+"','"+ContactosABC.tabladoctor+"')";
+                +"','"+((Doctor)contacto).getDireccionHospital()+"','doctor')";
         
-        idMaximo=ContactosABC.verIdMaximo(ContactosABC.tabladoctor)+1;
-        querymediodecontactos="INSERT INTO contacto(`"+ContactosABC.campoidpersona+"`, `"+ContactosABC.campoprofesion+"`, `"+ContactosABC.campocontactos+"`) VALUES ("+idMaximo+",'"+ContactosABC.tabladoctor+"','"+contacto.getEmail()+"')";
        
         ContactosABC.guardarDatosContacto(querycontactos);
-        ContactosABC.guardarDatosContacto(querymediodecontactos);
+        
         }
 
     public static void capturarDatosEstudiante() {
         
         capturaDatosContacto("estudiante");
+        idMaximo=ContactosABC.verIdMaximo("estudiante")+1;
+        capturaMediosContacto("estudiante",idMaximo);
+        bandera=true;
+        
+        while(bandera)
+        {
+        if(Mensajes.mostrarDialogoConfirmacionAgregarOtroMedioDeContacto())
+        {
+            capturaMediosContacto("estudiante",idMaximo);
+            bandera=true;
+        }
+        else
+        {
+        bandera=false;
+        }
+        }
+        ((Estudiante)contacto).setEmail(Mensajes.mostrarDialogoCapturaString("Ingresa el Email"));
         ((Estudiante)contacto).setFechaNacimiento(Mensajes.mostrarDialogoCapturaString("Ingresa la fecha de nacimiento"));
         ((Estudiante)contacto).setLugarNacimiento(Mensajes.mostrarDialogoCapturaString("Ingresa el lugar de nacimiento"));
         ((Estudiante)contacto).setEstudiaCarrera(Mensajes.mostrarDialogoCapturaString("Ingresa la carrera que estudia"));
         
-        querycontactos="INSERT INTO "+ContactosABC.tablaestudiante
-                +"("+ContactosABC.camponombre+", "+ContactosABC.campoapellidopaterno
-                +","+ContactosABC.campoapellidomaterno+","+ContactosABC.campolugardenacimiento
-                +","+ContactosABC.campofechadenacimiento+","+ContactosABC.campocarrera
-                +","+ContactosABC.campoprofesion+")"
+        querycontactos="INSERT INTO estudiante(Nombre,ApePa,ApeMa,LugarNac,FechaNac,Carrera,Email,Profesion)"
                     + " VALUES ('"+contacto.getNombre()+"','"+contacto.getApellidoPaterno()
                 +"','"+contacto.getApellidoMaterno()+"','"+((Estudiante)contacto).getLugarNacimento()
                 +"','"+((Estudiante)contacto).getFechaNacimiento()+"','"
-                +((Estudiante)contacto).getEstudiaCarrera()+"','"+ContactosABC.tablaestudiante+"')";
+                +((Estudiante)contacto).getEstudiaCarrera()+"','"+((Estudiante)contacto).getEmail()+"','estudiante')";
         
-        idMaximo=ContactosABC.verIdMaximo(ContactosABC.tablaestudiante)+1;
-        querymediodecontactos="INSERT INTO contacto(`"+ContactosABC.campoidpersona+"`, `"+ContactosABC.campoprofesion+"`, `"+ContactosABC.campocontactos+"`) VALUES ("+idMaximo+",'"+ContactosABC.tablaestudiante+"','"+contacto.getEmail()+"')";
        
         ContactosABC.guardarDatosContacto(querycontactos);
-        ContactosABC.guardarDatosContacto(querymediodecontactos);
+       
         
        }
 
     public static void capturarDatosLicenciado() {
         
         capturaDatosContacto("licenciado");
+        idMaximo=ContactosABC.verIdMaximo("licenciado")+1;
+        capturaMediosContacto("licenciado",idMaximo);
+        bandera=true;
+        
+        while(bandera)
+        {
+        if(Mensajes.mostrarDialogoConfirmacionAgregarOtroMedioDeContacto())
+        {
+            capturaMediosContacto("licenciado",idMaximo);
+            bandera=true;
+        }
+        else
+        {
+        bandera=false;
+        }
+        }
         ((Licenciado)contacto).setTelefonoOficina(Mensajes.mostrarDialogoCapturaString("Ingresa el Telefono de oficina"));
         ((Licenciado)contacto).setHorarioAtencionInicio(Mensajes.mostrarDialogoCapturaString("Ingresa el horario de inicio"));
         ((Licenciado)contacto).setHorarioAtencionFin(Mensajes.mostrarDialogoCapturaString("Ingresa el horario de fin"));
         
-        querycontactos="INSERT INTO "+ContactosABC.tablalicenciado
-                +"("+ContactosABC.camponombre+", "+ContactosABC.campoapellidopaterno
-                +","+ContactosABC.campoapellidomaterno+","+ContactosABC.campotelefonooficina
-                +","+ContactosABC.campohorarioinicial+","+ContactosABC.campohorariofinal
-                +","+ContactosABC.campoprofesion+")"
+        querycontactos="INSERT INTO "+"licenciado"
+                +"(Nombre, ApePa,ApeMa,TelOficina,HorarioIn,HorarioFin,Profesion)"
                     + " VALUES ('"+contacto.getNombre()+"','"+contacto.getApellidoPaterno()
                 +"','"+contacto.getApellidoMaterno()+"','"+((Licenciado)contacto).getTelefonoOficina()
                 +"','"+((Licenciado)contacto).getHorarioAtencionInicio()+"','"
-                +((Licenciado)contacto).getHorarioAtencionFin()+"','"+ContactosABC.tablalicenciado+"')";
+                +((Licenciado)contacto).getHorarioAtencionFin()+"','"+"licenciado"+"')";
         
-        idMaximo=ContactosABC.verIdMaximo(ContactosABC.tablalicenciado)+1;
-        querymediodecontactos="INSERT INTO contacto(`"+ContactosABC.campoidpersona+"`, `"+ContactosABC.campoprofesion+"`, `"+ContactosABC.campocontactos+"`) VALUES ("+idMaximo+",'"+ContactosABC.tablalicenciado+"','"+contacto.getEmail()+"')";
-       
+        
         ContactosABC.guardarDatosContacto(querycontactos);
-        ContactosABC.guardarDatosContacto(querymediodecontactos);
+        
          }
 
     public static void capturarDatosPersona() {
         
         capturaDatosContacto("persona");
+        idMaximo=ContactosABC.verIdMaximo("persona")+1;
+        capturaMediosContacto("persona",idMaximo);
+        bandera=true;
+        
+        while(bandera)
+        {
+        if(Mensajes.mostrarDialogoConfirmacionAgregarOtroMedioDeContacto())
+        {
+            capturaMediosContacto("persona",idMaximo);
+            bandera=true;
+        }
+        else
+        {
+        bandera=false;
+        }
+        }
+        
         ((Persona)contacto).setDomicilio(Mensajes.mostrarDialogoCapturaString("Ingresa el Domicilio"));
         ((Persona)contacto).setContactoPreferido(Mensajes.mostrarDialogoCapturaString("Ingresa el medio de contacto favorito"));
         ((Persona)contacto).setOcupacion(Mensajes.mostrarDialogoCapturaString("Ingresa la ocupacion"));
         
-         querycontactos="INSERT INTO "+ContactosABC.tablapersona
-                +"("+ContactosABC.camponombre+", "+ContactosABC.campoapellidopaterno
-                +","+ContactosABC.campoapellidomaterno+","+ContactosABC.campodomicilio
-                +","+ContactosABC.campomediodecontactopreferido+","+ContactosABC.campoocupacion
-                +","+ContactosABC.campoprofesion+")"
+         querycontactos="INSERT INTO persona(Nombre,Apepa,ApeMa,Domicilio,MedioPreferido,Ocupacion,Profesion)"
                     + " VALUES ('"+contacto.getNombre()+"','"+contacto.getApellidoPaterno()
                 +"','"+contacto.getApellidoMaterno()+"','"+((Persona)contacto).getDomicilio()
                 +"','"+((Persona)contacto).getContactoPreferido()+"','"
-                +((Persona)contacto).getOcupacion()+"','"+ContactosABC.tablapersona+"')";
+                +((Persona)contacto).getOcupacion()+"','"+"persona"+"')";
         
-       idMaximo=ContactosABC.verIdMaximo(ContactosABC.tablapersona)+1;
-        querymediodecontactos="INSERT INTO contacto(`"+ContactosABC.campoidpersona+"`, `"+ContactosABC.campoprofesion+"`, `"+ContactosABC.campocontactos+"`) VALUES ("+idMaximo+",'"+ContactosABC.tablapersona+"','"+contacto.getEmail()+"')";
+       ContactosABC.guardarDatosContacto(querycontactos);
        
-        ContactosABC.guardarDatosContacto(querycontactos);
-        ContactosABC.guardarDatosContacto(querymediodecontactos);
         
     }
     
+    
+     public static void capturaMediosContacto(String tabla,int valorid){
+    
+    contacto.setMedioContacto(Mensajes.mostrarDialogoCapturaString("Ingresa un medio de contacto, puede ser:"
+                +"\n"+"Telefono Celular, Telefono de Casa, Email "));
+        
+        querymediodecontactos="INSERT INTO contacto(`idPersona`, `Profesion`, `Contactos`)"
+                + " VALUES ("+valorid+",'"+tabla+"','"+contacto.getMedioContacto()+"')";
+        ContactosABC.guardarDatosContacto(querymediodecontactos);
+}
     
     
    

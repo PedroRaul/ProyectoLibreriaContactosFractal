@@ -1,4 +1,3 @@
-//
 package proyectolibreriacontactosfractal;
 
 import javax.swing.JOptionPane;
@@ -22,4 +21,42 @@ public class Mensajes {
     
          JOptionPane.showMessageDialog(null,mensaje);
     } 
-}
+    
+    public static boolean mostrarDialogoConfirmacionTerminarPrograma()
+    {
+       int resultado = JOptionPane.showConfirmDialog (null,
+               "¿Quieres salir del programa?","Atencion",JOptionPane.YES_NO_OPTION);
+            if(resultado == JOptionPane.YES_OPTION)
+                return true;
+                else
+                return false;
+  
+    }
+    
+    public static boolean mostrarDialogoConfirmacionTerminarProceso()
+    {
+       int resultado = JOptionPane.showConfirmDialog (null,
+               "¿Quieres cancelar la operacion?","Atencion",JOptionPane.YES_NO_OPTION);
+            if(resultado == JOptionPane.YES_OPTION)
+                return true;
+                else
+                return false;
+  
+    }
+    
+    
+    public static boolean mostrarDialogoConfirmacionAgregarOtroMedioDeContacto()
+    {
+       int resultado = JOptionPane.showConfirmDialog (null,
+               "¿Quieres Agregar Otro Medio de Contacto ?","Atencion",JOptionPane.YES_NO_OPTION);
+            if(resultado == JOptionPane.YES_OPTION)
+                return true;
+                else
+                return false;
+  
+    }
+    
+    
+    
+    
+    }

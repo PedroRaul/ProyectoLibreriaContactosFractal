@@ -89,20 +89,57 @@ public class ContactosABC {
     
     
     
-    public static int verIdMaximo(String tabla){
+    
+    
+    
+    
+    public static int Id(String dato,String nombre,String apellidoPaterno,String apellidoMaterno){
+       conexion=new conexion();
+        conexion.conectar();
+        int numero = 0;
+        try{
+            PreparedStatement consulta;
+            consulta = conexion.getConnection().prepareStatement
+            ("SELECT * From "+dato+" WHERE Nombre='"+nombre+"'"
+            + "AND ApePa='"+apellidoPaterno+"'"
+            + "AND ApeMa='"+apellidoMaterno+"'");
+            
+            System.out.println(consulta);
+            ResultSet res= consulta.executeQuery();
+            if(res.next() ) 
+            res.last();
+            numero= Integer.parseInt(res.getString("IdPersona"));
+           
+            System.out.println(numero);
+			
+	} catch (SQLException e) {
+            System.out.println(e.getMessage());
+            Mensajes.mostrarDialogo(" Error al arrojar datos");
+            
+        }
+        conexion.desconectar();
+           System.out.println(numero);   
+        return numero; 
+      
+    }
+    
+    public static int verIdMaximo(String tabla)
+    
+    {
         conexion=new conexion();
         conexion.conectar();
-        int resultado=0;
+        int resultado = 0;
         try{
             PreparedStatement consulta;
             consulta = conexion.getConnection().prepareStatement
             ("SELECT * From "+tabla+" ");
             ResultSet res= consulta.executeQuery();
             if(res.next() ) 
+            {
             res.last();
-            resultado= Integer.parseInt(res.getString("IdPersona"));
+            resultado= Integer.parseInt(res.getString("IdPersona"));}
            
-            
+            else{resultado=0;}
 			
 	} catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -133,11 +170,11 @@ public class ContactosABC {
             System.out.println(e.getMessage());
             Mensajes.mostrarDialogo("Error en el registro intente de nuevo");
         }
+    
+    
 }
    
-     
-     
-     
+       
      
      
      

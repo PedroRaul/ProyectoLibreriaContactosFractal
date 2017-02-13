@@ -1,4 +1,3 @@
-//
 package proyectolibreriacontactosfractal;
 
 public class Deportista extends Contacto 
@@ -14,9 +13,9 @@ public class Deportista extends Contacto
 		super ();
 	}
 
-	public Deportista(String nombre,String apellidopaterno, String apellidomaterno,String telefonocasa,String telefonocelular,String email, String genero, String fechanacimiento, String deporte )
+	public Deportista(String nombre,String apellidopaterno, String apellidomaterno,String mediocontacto,int id, String genero, String fechanacimiento, String deporte )
 	{
-		super(nombre,apellidopaterno,apellidomaterno,telefonocasa,telefonocelular,email);
+		super(nombre,apellidopaterno,apellidomaterno,mediocontacto,id);
 		this.genero=genero;
 		this.fechanacimiento=fechanacimiento;
 		this.deporte=deporte;

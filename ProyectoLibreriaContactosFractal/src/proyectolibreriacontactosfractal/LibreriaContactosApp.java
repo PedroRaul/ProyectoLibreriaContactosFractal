@@ -212,23 +212,23 @@ public class LibreriaContactosApp {
         switch(valoropcionmenustring)
         {
             case"deportista":
-                EliminarPersona.EliminarPersonaDeportista();
+                EliminarDatos.EliminarPersonaDeportista();
                 mostrarMenuPrincipal();
             break;
              case"doctor":
-                EliminarPersona.EliminarPersonaDoctor();
+                EliminarDatos.EliminarPersonaDoctor();
                 mostrarMenuPrincipal();
             break;
               case"estudiante":
-                EliminarPersona.EliminarPersonaEstudiante();
+                EliminarDatos.EliminarPersonaEstudiante();
                 mostrarMenuPrincipal();
             break;
             case"Licenciado":
-                EliminarPersona.EliminarPersonaLicenciado();
+                EliminarDatos.EliminarPersonaLicenciado();
                 mostrarMenuPrincipal();
             break;
             case"persona":
-                EliminarPersona.EliminarPersona();
+                EliminarDatos.EliminarPersona();
                 mostrarMenuPrincipal();
             break;
            

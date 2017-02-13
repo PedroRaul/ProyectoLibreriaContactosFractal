@@ -7,9 +7,8 @@ public class Contacto
 	protected static String nombre="";
 	protected static String apellidopaterno="";
 	protected static String apellidomaterno="";
-	protected static String telefonocelular="";
-	protected static String telefonocasa="";
-	protected static String email="";
+	protected static String mediocontacto="";
+        protected static int idpersonal;
 
 
 	public Contacto()
@@ -18,16 +17,14 @@ public class Contacto
 
 	}
 
-	public Contacto(String nombre,String apellidopaterno, String apellidomaterno,String telefonocasa,
-		String telefonocelular,String email)
+	public Contacto(String nombre,String apellidopaterno, String apellidomaterno,String mediocontacto,int idpersonal)
 	
 	{
 		this.nombre=nombre;
 		this.apellidopaterno=apellidopaterno;
 		this.apellidomaterno=apellidomaterno;
-		this.telefonocelular=telefonocelular;
-		this.telefonocasa=telefonocasa;
-		this.email=email;
+		this.mediocontacto=mediocontacto;
+                this.idpersonal=idpersonal;
 	}
 
 	public void setNombre(String nombre)
@@ -48,20 +45,16 @@ public class Contacto
 		this.apellidomaterno=apellidomaterno;
 	}
 
-	public void setTelefonoCasa(String telefonocasa)
+	public void setMedioContacto(String mediocontacto)
 
 	{
-		this.telefonocasa=telefonocasa;
-	}
-
-	public void setTelefonoCelular (String telefonocelular)
-	{
-		this.telefonocelular=telefonocelular;
+		this.mediocontacto=mediocontacto;
 	}
         
-        public void setEmail (String email)
+        public void setIdPersonal(int idpersonal)
+
 	{
-		this.email=email;
+		this.idpersonal=idpersonal;
 	}
 
 	public String getNombre()
@@ -82,18 +75,12 @@ public class Contacto
 		return this.apellidomaterno;
 	}
 
-	public String getTelefonoCasa()
+	public String getMedioContacto()
 	{
-		return this.telefonocasa;
+		return this.mediocontacto;
 	}
-
-	public String getTelefonoCelular()
+        public int getIdPersona()
 	{
-		return this.telefonocelular;
-	}
-
-	public String getEmail()
-	{
-		return this.email;
+		return this.idpersonal;
 	}
 }
