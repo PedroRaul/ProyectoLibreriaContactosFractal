@@ -299,7 +299,7 @@ public class BusquedaDatos {
                 consulta.close();
                 resultadoquery.close();
             }
-            conexion.desconectar();
+            conexion.desconectar();//
             } catch (SQLException e){
             Mensajes.mostrarDialogo("Error, no se conectó");
             System.out.println(e);
