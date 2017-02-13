@@ -8,7 +8,7 @@ public class Contacto
 	protected static String apellidopaterno="";
 	protected static String apellidomaterno="";
 	protected static String mediocontacto="";
-        protected static int idpersonal="";
+        protected static int idpersonal;
 
 
 	public Contacto()
