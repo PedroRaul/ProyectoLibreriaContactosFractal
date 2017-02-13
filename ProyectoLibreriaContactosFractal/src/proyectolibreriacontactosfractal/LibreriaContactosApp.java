@@ -28,12 +28,9 @@ public class LibreriaContactosApp {
     
     public static void main(String[] args) {
         
-        System.out.print(ContactosABC.verIdMaximo("deportista"));
+        //System.out.print(ContactosABC.verIdMaximo("deportista"));
        mostrarMenuPrincipal();
         
-        
-        
-       
     }
     
     
@@ -42,7 +39,7 @@ public class LibreriaContactosApp {
 // muestra el menu principal de la aplicacion
     private static void mostrarMenuPrincipal() {
         valoropcionmenuinteger=Mensajes.mostrarDialogoCapturaInteger("Opciones (Ingresa Numero Correspondiente)"
-        +"\n"+"1.- Buscar Contacto "+"\n"+"2.- Agregar Contacto");
+        +"\n"+"1.- Buscar Contacto "+"\n"+"2.- Agregar Contacto"+"\n"+"3.-Modificar Contacto");
         
         if(valoropcionmenuinteger==1)
             mostrarCapturaBuscarContacto();
@@ -86,10 +83,7 @@ public class LibreriaContactosApp {
             break;
             case"5":
                 BusquedaDatos.buscarPersona(valorprofesionmenustring);
-            break;
-                case"6":
-                BusquedaDatos.buscarEjemplo(valorprofesionmenustring);
-            break;
+            break;   
         }
         mostrarMenuPrincipal();
     }

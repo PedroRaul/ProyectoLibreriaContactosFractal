@@ -64,17 +64,9 @@ public class ContactosABC {
             System.out.println(e.getMessage());
             Mensajes.mostrarDialogo("Error en el registro intente de nuevo");
         }
-        
-        
-       
-        
-            
-        
     }
     
-    public static int verIdMaximo(String tabla)
-    
-    {
+    public static int verIdMaximo(String tabla){
         conexion=new conexion();
         conexion.conectar();
         int resultado=0;
@@ -117,7 +109,5 @@ public class ContactosABC {
             System.out.println(e.getMessage());
             Mensajes.mostrarDialogo("Error en el registro intente de nuevo");
         }
-    
-    
 }
 }
