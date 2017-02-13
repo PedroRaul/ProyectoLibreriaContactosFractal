@@ -57,24 +57,27 @@ public class LibreriaContactosApp {
     private static void mostrarCapturaBuscarContacto() {
         
         valorprofesionmenustring=Mensajes.mostrarDialogoCapturaString("INGRESA EL NUMERO CORRESPONDIENTE A LA PROFESION...\n\n1.Deportista\n2-Doctor\n3.Estudiante\n4.Licenciado\n5.Persona");
-        valoropcionmenustring=Mensajes.mostrarDialogoCapturaString("Ingresa el nombre del contacto a buscar");
+        //valoropcionmenustring=Mensajes.mostrarDialogoCapturaString("Ingresa el nombre del contacto a buscar");
        
         switch(valorprofesionmenustring)
         {
             case "1":
-                BusquedaDatos.buscarDeportista(valoropcionmenustring);
+                BusquedaDatos.menuEleccionDeportista(valorprofesionmenustring);
             break;
             case"2":
-                BusquedaDatos.buscarDoctor(valoropcionmenustring);
+                BusquedaDatos.buscarDoctor(valorprofesionmenustring);
             break;
             case"3":
-                BusquedaDatos.buscarEstudiante(valoropcionmenustring);
+                BusquedaDatos.buscarEstudiante(valorprofesionmenustring);
             break;
             case"4":
-                BusquedaDatos.buscarLicenciado(valoropcionmenustring);
+                BusquedaDatos.buscarLicenciado(valorprofesionmenustring);
             break;
             case"5":
-                BusquedaDatos.buscarPersona(valoropcionmenustring);
+                BusquedaDatos.buscarPersona(valorprofesionmenustring);
+            break;
+                case"6":
+                BusquedaDatos.buscarEjemplo(valorprofesionmenustring);
             break;
         }
         mostrarMenuPrincipal();
