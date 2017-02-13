@@ -31,7 +31,7 @@ public class EliminarDatos {
               dato = new Persona();
               break;
           
-      }
+      }//
       dato.setNombre(Mensajes.mostrarDialogoCapturaString("Ingresa el Nombre a eliminar"));
       //validar campo Nombre
       if(dato.getNombre()== null)
