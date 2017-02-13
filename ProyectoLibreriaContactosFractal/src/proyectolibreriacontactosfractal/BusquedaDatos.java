@@ -46,7 +46,7 @@ public class BusquedaDatos {
             Mensajes.mostrarDialogo("Error en el registro intente de nuevo");
         }
     }
-    
+//-----------------------------------------------------------------------------------------    
     public static void buscarDeportista(String valorentrada){   
         conexion=new conexion();
         conexion.conectar();
@@ -78,8 +78,9 @@ public class BusquedaDatos {
             Mensajes.mostrarDialogo("Error, no se conectó");
             System.out.println(e);
 	}
+        LibreriaContactosApp.mostrarMenuPrincipal();
     }
-    
+//-----------------------------------------------------------------------------------------    
     public static void buscarDoctor(String valorentrada){
         conexion=new conexion();
         conexion.conectar();
@@ -113,8 +114,9 @@ public class BusquedaDatos {
             Mensajes.mostrarDialogo("Error, no se conectó");
             System.out.println(e);
 	}
+        LibreriaContactosApp.mostrarMenuPrincipal();
     }
-    
+//-----------------------------------------------------------------------------------------    
     public static void buscarEstudiante(String valorentrada){
         conexion=new conexion();
         conexion.conectar();
@@ -148,8 +150,9 @@ public class BusquedaDatos {
             Mensajes.mostrarDialogo("Error, no se conectó");
             System.out.println(e);
 	}
+        LibreriaContactosApp.mostrarMenuPrincipal();
     }
-    
+//-----------------------------------------------------------------------------------------    
     public static void buscarLicenciado(String valorentrada){
         conexion=new conexion();
         conexion.conectar();
@@ -181,8 +184,9 @@ public class BusquedaDatos {
             Mensajes.mostrarDialogo("Error, no se conectó");
             System.out.println(e);
 	}
+        LibreriaContactosApp.mostrarMenuPrincipal();
     }
-    
+//-----------------------------------------------------------------------------------------    
     public static void buscarPersona(String valorentrada){
         conexion=new conexion();
         conexion.conectar();
@@ -214,8 +218,9 @@ public class BusquedaDatos {
             Mensajes.mostrarDialogo("Error, no se conectó");
             System.out.println(e);
 	}
+        LibreriaContactosApp.mostrarMenuPrincipal();
     }
-
+//-----------------------------------------------------------------------------------------
     public static void buscarDeportistaManual(String valorentrada){//Este Metodo busca todo registro de la tabla y lo muestra en consola
         conexion=new conexion();
         conexion.conectar();
@@ -229,6 +234,7 @@ public class BusquedaDatos {
             resultadoquerycontador.next();
             int NR = resultadoquerycontador.getInt ("count(*)");
             //--------------------------
+            //String array[] = new String[NR];
             for(int j=1;j<=NR;j++){
                 PreparedStatement consulta;
                 consulta = conexion.getConnection().prepareStatement("SELECT Nombre, ApePa, ApeMa,Genero,FechaNac,Deporte FROM Deportista where IdPersona='"+j+"' ");
@@ -241,6 +247,7 @@ public class BusquedaDatos {
                     ((Deportista)contacto).setFechaNacimiento(resultadoquery.getString("FechaNac"));
                     ((Deportista)contacto).setDeporte(resultadoquery.getString("Deporte"));
                 }
+                
                 Mensajes.mostrarDialogo("---------------------------"+"\nNombre="+contacto.getNombre()+"\nApellidoPaterno="
                     +contacto.getApellidoPaterno()+"\nApellidoMaterno="+contacto.getApellidoMaterno()
                     +"\nGenero="+((Deportista)contacto).getGenero()+"\nFecha de Nacimiento="
@@ -254,8 +261,177 @@ public class BusquedaDatos {
             Mensajes.mostrarDialogo("Error, no se conectó");
             System.out.println(e);
 	}
+        LibreriaContactosApp.mostrarMenuPrincipal();
     }
-    
+//-----------------------------------------------------------------------------------------    
+    public static void buscarDoctorManual(String valorentrada){//Este Metodo busca todo registro de la tabla y lo muestra en consola
+        conexion=new conexion();
+        conexion.conectar();
+        contacto=new Doctor();  
+	try{
+            //--------Contador---------
+            PreparedStatement consultacontador;
+            consultacontador = conexion.getConnection().prepareStatement("select count(*) from Doctor");
+            ResultSet resultadoquerycontador = consultacontador.executeQuery();
+            resultadoquerycontador.beforeFirst(); 
+            resultadoquerycontador.next();
+            int NR = resultadoquerycontador.getInt ("count(*)");
+            //--------------------------
+            //String array[] = new String[NR];
+            for(int j=1;j<=NR;j++){
+                PreparedStatement consulta;
+                consulta = conexion.getConnection().prepareStatement("SELECT Nombre, ApePa, ApeMa,FechaNac,Especialidad,NombreH,DireccionH FROM Doctor where IdPersona='"+j+"' ");
+                ResultSet resultadoquery = consulta.executeQuery();
+                while(resultadoquery.next()){
+                contacto.setNombre(resultadoquery.getString("Nombre"));
+                contacto.setApellidoPaterno(resultadoquery.getString("ApePa"));
+                contacto.setApellidoMaterno(resultadoquery.getString("ApeMa"));
+                ((Doctor)contacto).setFechaNacimiento(resultadoquery.getString("FechaNac"));
+                ((Doctor)contacto).setEspecialidad(resultadoquery.getString("Especialidad"));
+                ((Doctor)contacto).setNombreHospital(resultadoquery.getString("NombreH"));
+                ((Doctor)contacto).setDireccionHospital(resultadoquery.getString("DireccionH"));
+            }
+            Mensajes.mostrarDialogo("---------------------------"+"\nNombre="+contacto.getNombre()+"\nApellidoPaterno="
+                    +contacto.getApellidoPaterno()+"\nApellidoMaterno="+contacto.getApellidoMaterno()
+                    +"\nFecha de Nacimiento="+((Doctor)contacto).getFechaNacimiento()+"\nEspecialidad="
+                    +((Doctor)contacto).getEspecialidad()+"\nNombre del Hospital="+((Doctor)contacto).getNombreHospital()
+                    +"\nDireccion del Hospital="+((Doctor)contacto).getDireccionHospital());
+                consulta.close();
+                resultadoquery.close();
+            }
+            conexion.desconectar();
+            } catch (SQLException e){
+            Mensajes.mostrarDialogo("Error, no se conectó");
+            System.out.println(e);
+	}
+        LibreriaContactosApp.mostrarMenuPrincipal();
+    }
+//-----------------------------------------------------------------------------------------    
+    public static void buscarEstudianteManual(String valorentrada){//Este Metodo busca todo registro de la tabla y lo muestra en consola
+        conexion=new conexion();
+        conexion.conectar();
+        contacto=new Estudiante();  
+	try{
+            //--------Contador---------
+            PreparedStatement consultacontador;
+            consultacontador = conexion.getConnection().prepareStatement("select count(*) from Estudiante");
+            ResultSet resultadoquerycontador = consultacontador.executeQuery();
+            resultadoquerycontador.beforeFirst(); 
+            resultadoquerycontador.next();
+            int NR = resultadoquerycontador.getInt ("count(*)");
+            //--------------------------
+            //String array[] = new String[NR];
+            for(int j=1;j<=NR;j++){
+                PreparedStatement consulta;
+                consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,LugarNac,FechaNac,Carrera,Email from Estudiante WHERE Nombre = '"+nombrecontacto+"' and ApePa='"+apellidopaternocontacto+"' and ApeMa='"+apellidomaternocontacto+"'");
+                ResultSet resultadoquery = consulta.executeQuery();
+            while(resultadoquery.next()){
+                contacto.setNombre(resultadoquery.getString("Nombre"));
+		contacto.setApellidoPaterno(resultadoquery.getString("ApePa"));
+		contacto.setApellidoMaterno(resultadoquery.getString("ApeMa"));
+                ((Estudiante)contacto).setLugarNacimiento(resultadoquery.getString("LugarNac"));
+                ((Estudiante)contacto).setFechaNacimiento(resultadoquery.getString("FechaNac"));
+                ((Estudiante)contacto).setEstudiaCarrera(resultadoquery.getString("Carrera"));
+                ((Estudiante)contacto).setEmail(resultadoquery.getString("Email"));
+            }
+                Mensajes.mostrarDialogo("---------------------------"+"\nNombre="+contacto.getNombre()+"\nApellidoPaterno="
+                    +contacto.getApellidoPaterno()+"\nApellidoMaterno="+contacto.getApellidoMaterno()
+                    +"\nLugar de Nacimiento="+((Estudiante)contacto).getLugarNacimento()+"\nFecha de Nacimiento="
+                    +((Estudiante)contacto).getFechaNacimiento()+"\nCarrera="+((Estudiante)contacto).getEstudiaCarrera()
+                    +"\nEmail="+((Estudiante)contacto).getEmail());
+                consulta.close();
+                resultadoquery.close();
+            }
+            conexion.desconectar();
+            } catch (SQLException e){
+            Mensajes.mostrarDialogo("Error, no se conectó");
+            System.out.println(e);
+	}
+        LibreriaContactosApp.mostrarMenuPrincipal();
+    }
+ //-----------------------------------------------------------------------------------------   
+    public static void buscarLicenciadoManual(String valorentrada){//Este Metodo busca todo registro de la tabla y lo muestra en consola
+        conexion=new conexion();
+        conexion.conectar();
+        contacto=new Licenciado();  
+	try{
+            //--------Contador---------
+            PreparedStatement consultacontador;
+            consultacontador = conexion.getConnection().prepareStatement("select count(*) from Licenciado");
+            ResultSet resultadoquerycontador = consultacontador.executeQuery();
+            resultadoquerycontador.beforeFirst(); 
+            resultadoquerycontador.next();
+            int NR = resultadoquerycontador.getInt ("count(*)");
+            //--------------------------
+            //String array[] = new String[NR];
+            for(int j=1;j<=NR;j++){
+                PreparedStatement consulta;
+            consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,TelOficina,HorarioIn,HorarioFin from Licenciado WHERE Nombre = '"+nombrecontacto+"' and ApePa='"+apellidopaternocontacto+"' and ApeMa='"+apellidomaternocontacto+"'");
+            ResultSet resultadoquery = consulta.executeQuery();
+            while(resultadoquery.next()){
+                contacto.setNombre(resultadoquery.getString("Nombre"));
+		contacto.setApellidoPaterno(resultadoquery.getString("ApePa"));
+		contacto.setApellidoMaterno(resultadoquery.getString("ApeMa"));
+                ((Licenciado)contacto).setTelefonoOficina(resultadoquery.getString("TelOficina"));
+                ((Licenciado)contacto).setHorarioAtencionInicio(resultadoquery.getString("HorarioIn"));
+                ((Licenciado)contacto).setHorarioAtencionFin(resultadoquery.getString("HorarioFin"));
+            }
+            Mensajes.mostrarDialogo("---------------------------"+"\nNombre="+contacto.getNombre()+"\nApellidoPaterno="
+                    +contacto.getApellidoPaterno()+"\nApellidoMaterno="+contacto.getApellidoMaterno()
+                    +"\nTelefono de Oficina="+((Licenciado)contacto).getTelefonoOficina()+"\nHorario de Atencion="
+                    +((Licenciado)contacto).getHorarioAtencionInicio()+" a "+((Licenciado)contacto).getHorarioAtencionFin());
+                consulta.close();
+                resultadoquery.close();
+            }
+            conexion.desconectar();
+            } catch (SQLException e){
+            Mensajes.mostrarDialogo("Error, no se conectó");
+            System.out.println(e);
+	}
+        LibreriaContactosApp.mostrarMenuPrincipal();
+    }
+//-----------------------------------------------------------------------------------------    
+    public static void buscarPersonaManual(String valorentrada){//Este Metodo busca todo registro de la tabla y lo muestra en consola
+        conexion=new conexion();
+        conexion.conectar();
+        contacto=new Persona();  
+	try{
+            //--------Contador---------
+            PreparedStatement consultacontador;
+            consultacontador = conexion.getConnection().prepareStatement("select count(*) from Persona");
+            ResultSet resultadoquerycontador = consultacontador.executeQuery();
+            resultadoquerycontador.beforeFirst(); 
+            resultadoquerycontador.next();
+            int NR = resultadoquerycontador.getInt ("count(*)");
+            //--------------------------
+            //String array[] = new String[NR];
+            for(int j=1;j<=NR;j++){
+                PreparedStatement consulta;
+            consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,Domicilio,MedioPreferido,Ocupacion from Persona WHERE Nombre = '"+nombrecontacto+"' and ApePa='"+apellidopaternocontacto+"' and ApeMa='"+apellidomaternocontacto+"'");
+            ResultSet resultadoquery = consulta.executeQuery();
+            while(resultadoquery.next()){
+                contacto.setNombre(resultadoquery.getString("Nombre"));
+		contacto.setApellidoPaterno(resultadoquery.getString("ApePa"));
+		contacto.setApellidoMaterno(resultadoquery.getString("ApeMa"));
+                ((Persona)contacto).setDomicilio(resultadoquery.getString("Domicilio"));
+                ((Persona)contacto).setContactoPreferido(resultadoquery.getString("MedioPreferido"));
+                ((Persona)contacto).setOcupacion(resultadoquery.getString("Ocupacion"));
+            }
+            Mensajes.mostrarDialogo("---------------------------"+"\nNombre="+contacto.getNombre()+"\nApellidoPaterno="
+                    +contacto.getApellidoPaterno()+"\nApellidoMaterno="+contacto.getApellidoMaterno()
+                    +"\nDomicilio="+((Persona)contacto).getDomicilio()+"\nMedio de Contacto Preferido="
+                    +((Persona)contacto).getContactoPreferido()+"\nOcupacion="+((Persona)contacto).getOcupacion());
+                consulta.close();
+                resultadoquery.close();
+            }
+            conexion.desconectar();
+            } catch (SQLException e){
+            Mensajes.mostrarDialogo("Error, no se conectó");
+            System.out.println(e);
+	}
+        LibreriaContactosApp.mostrarMenuPrincipal();
+    }
+ //-----------------------------------------------------------------------------------------   
     public static void menuEleccionDeportista(String valorentrada){
         valoreleccion=Mensajes.mostrarDialogoCapturaString("INGRESA EL NUMERO COMO DESEAS BUSCAR...\n\n1-Buscar Por Nombre\n2-Buscar Todo");
         switch(valoreleccion){
@@ -264,6 +440,54 @@ public class BusquedaDatos {
             break;
             case"2":
                 BusquedaDatos.buscarDeportistaManual(valorentrada);
+            break;
+        }
+    }
+    
+    public static void menuEleccionDoctor(String valorentrada){
+        valoreleccion=Mensajes.mostrarDialogoCapturaString("INGRESA EL NUMERO COMO DESEAS BUSCAR...\n\n1-Buscar Por Nombre\n2-Buscar Todo");
+        switch(valoreleccion){
+            case "1":
+                BusquedaDatos.buscarDoctor(valorentrada);
+            break;
+            case"2":
+                BusquedaDatos.buscarDoctorManual(valorentrada);
+            break;
+        }
+    }
+    
+    public static void menuEleccionEstudiante(String valorentrada){
+        valoreleccion=Mensajes.mostrarDialogoCapturaString("INGRESA EL NUMERO COMO DESEAS BUSCAR...\n\n1-Buscar Por Nombre\n2-Buscar Todo");
+        switch(valoreleccion){
+            case "1":
+                BusquedaDatos.buscarEstudiante(valorentrada);
+            break;
+            case"2":
+                BusquedaDatos.buscarEstudianteManual(valorentrada);
+            break;
+        }
+    }
+    
+    public static void menuEleccionLicenciado(String valorentrada){
+        valoreleccion=Mensajes.mostrarDialogoCapturaString("INGRESA EL NUMERO COMO DESEAS BUSCAR...\n\n1-Buscar Por Nombre\n2-Buscar Todo");
+        switch(valoreleccion){
+            case "1":
+                BusquedaDatos.buscarLicenciado(valorentrada);
+            break;
+            case"2":
+                BusquedaDatos.buscarLicenciadoManual(valorentrada);
+            break;
+        }
+    }
+    
+    public static void menuEleccionPersona(String valorentrada){
+        valoreleccion=Mensajes.mostrarDialogoCapturaString("INGRESA EL NUMERO COMO DESEAS BUSCAR...\n\n1-Buscar Por Nombre\n2-Buscar Todo");
+        switch(valoreleccion){
+            case "1":
+                BusquedaDatos.buscarPersona(valorentrada);
+            break;
+            case"2":
+                BusquedaDatos.buscarPersonaManual(valorentrada);
             break;
         }
     }

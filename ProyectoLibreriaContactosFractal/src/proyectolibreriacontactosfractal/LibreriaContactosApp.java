@@ -1,7 +1,3 @@
-//
-
-//https://github.com/PedroRaul/ProyectoLibreriaContactosFractal.git
-
 package proyectolibreriacontactosfractal;
 
 
@@ -21,7 +17,8 @@ public class LibreriaContactosApp {
     //Almacena una cadena de caracteres capturada por el usuario
     private static String valoropcionmenustring;
     private static String valorprofesionmenustring;
-    private static String nombre;
+    private static String nombreamodificar;
+    private static String valorcaptura;
     
     
     
@@ -31,46 +28,67 @@ public class LibreriaContactosApp {
         
        mostrarMenuPrincipal();
         
+        
+        
+       
     }
     
     
 
 
 // muestra el menu principal de la aplicacion
-    private static void mostrarMenuPrincipal() {
-        valoropcionmenuinteger=Mensajes.mostrarDialogoCapturaInteger("Opciones (Ingresa Numero Correspondiente)"
+    public static void mostrarMenuPrincipal() {
+        valorcaptura=Mensajes.mostrarDialogoCapturaString("Opciones (Ingresa Numero Correspondiente)"
         +"\n"+"1.- Buscar Contacto "+"\n"+"2.- Agregar Contacto"+"\n"+"3.-Modificar Contacto"+"\n"+"4.-Eliminar Contacto");
         
-        if(valoropcionmenuinteger==1)
-            mostrarCapturaBuscarContacto();
-        else if( valoropcionmenuinteger == 2 )
-            mostrarCapturaTipoDeContacto();
-        else if( valoropcionmenuinteger == 3 )     
-            mostrarCapturaEditarContacto();
-        else if( valoropcionmenuinteger == 4 )
-            mostrarCapturaEliminarComtacto();
-         else if( valoropcionmenuinteger == 5 )
-            System.exit(0);
+        if(valorcaptura==null)
+           System.exit(0);
+        else 
+        {
         
+            switch(valorcaptura){
+            case "1":
+                mostrarCapturaBuscarContacto();
+            break;
+            case "2":
+                mostrarCapturaTipoDeContactoAgregar();
+            break;
+            case "3":
+                mostrarCapturaTipoDeContactoModificar();
+            break;
+            case "4":
+                mostrarCapturaEliminarComtacto();
+            break;
+           
+            default:
+                Mensajes.mostrarDialogo("Opcion Invalida intenta de nuevo");
+                mostrarMenuPrincipal();
+        }
+        
+        }
     }
     
    
     
     
     
-    private static void mostrarCapturaEditarContacto() {
-        String tipo = Mensajes.mostrarDialogoCapturaString("Ingresa tipo de contacto.");           
-        valoropcionmenustring=Mensajes.mostrarDialogoCapturaString("Ingresa el nombre del contacto a actualizar");
-        ModificarDatos.modificarContacto(tipo, valoropcionmenustring);
-        mostrarMenuPrincipal();
-    
-    }
+   
     
 // muestra el un mensaje de entrada para capturar el nombre del contacto a buscar 
     
     private static void mostrarCapturaBuscarContacto() {
         
-        valorprofesionmenustring=Mensajes.mostrarDialogoCapturaString("INGRESA EL NUMERO CORRESPONDIENTE A LA PROFESION...\n\n1.Deportista\n2-Doctor\n3.Estudiante\n4.Licenciado\n5.Persona");
+        valorprofesionmenustring=Mensajes.mostrarDialogoCapturaString
+        ("INGRESA EL NUMERO CORRESPONDIENTE A LA PROFESION...\n\n1.Deportista\n2-Doctor\n3.Estudiante\n4.Licenciado\n5.Persona");
+        
+        /*Valida la salida de la ventana, si regresa un null regresa a la ventana anterior 
+          si es diferentede null continua el metodo*/
+        if(valorprofesionmenustring==null)
+        {
+           mostrarMenuPrincipal();
+        }
+            
+          
         
         switch(valorprofesionmenustring)
         {
@@ -78,69 +96,59 @@ public class LibreriaContactosApp {
                 BusquedaDatos.menuEleccionDeportista(valorprofesionmenustring);
             break;
             case"2":
-                BusquedaDatos.buscarDoctor(valorprofesionmenustring);
+                BusquedaDatos.menuEleccionDoctor(valorprofesionmenustring);
             break;
             case"3":
-                BusquedaDatos.buscarEstudiante(valorprofesionmenustring);
+                BusquedaDatos.menuEleccionEstudiante(valorprofesionmenustring);
             break;
             case"4":
-                BusquedaDatos.buscarLicenciado(valorprofesionmenustring);
+                BusquedaDatos.menuEleccionLicenciado(valorprofesionmenustring);
             break;
             case"5":
-                BusquedaDatos.buscarPersona(valorprofesionmenustring);
-            break;   
+                BusquedaDatos.menuEleccionPersona(valorprofesionmenustring);
+            break;
+            default : mostrarCapturaBuscarContacto();
+                    
+               
         }
-        mostrarMenuPrincipal();
-    }
+         }
+        
+        
+       
+    
     
      private static void mostrarCapturaEliminarComtacto(){ 
-    valoropcionmenustring=Mensajes.mostrarDialogoCapturaString("Ingresa el tipo de contacto");
-   
+         
+         
+        valoropcionmenustring=Mensajes.mostrarDialogoCapturaString("Ingresa el tipo de contacto");
+            if(valoropcionmenustring==null)
+                mostrarMenuPrincipal();
     
-    
-    
-      TipoProfesion();
+    evaluarTipoDeContactoEliminar();
      }
-     public static void TipoProfesion(){
-        switch(valoropcionmenustring)
-        {
-            case"deportista":
-                EliminarPersona.EliminarPersonaDeportista();
-                mostrarMenuPrincipal();
-            break;
-             case"doctor":
-                EliminarPersona.EliminarPersonaDoctor();
-                mostrarMenuPrincipal();
-            break;
-              case"estudiante":
-                EliminarPersona.EliminarPersonaEstudiante();
-                mostrarMenuPrincipal();
-            break;
-            case"Licenciado":
-                EliminarPersona.EliminarPersonaLicenciado();
-                mostrarMenuPrincipal();
-            break;
-            case"persona":
-                EliminarPersona.EliminarPersona();
-                mostrarMenuPrincipal();
-            break;
-           
-        }
-      
-     }
+    
     
 
-    private static void mostrarCapturaTipoDeContacto() {
+    private static void mostrarCapturaTipoDeContactoAgregar() {
         valoropcionmenustring=Mensajes.mostrarDialogoCapturaString("Ingresa el tipo de contacto");
         
-        
-        
-        
-        
-            evaluarTipoDeContacto();
+        if(valoropcionmenustring==null)
+            mostrarMenuPrincipal();
+        evaluarTipoDeContactoAgregrar();
     }
     
-    private static void evaluarTipoDeContacto(){
+    private static void mostrarCapturaTipoDeContactoModificar() {
+        valoropcionmenustring=Mensajes.mostrarDialogoCapturaString("Ingresa el tipo de contacto");
+        
+        if(valoropcionmenustring==null)
+        mostrarMenuPrincipal();
+        
+        evaluarTipoDeContactoModificar();
+    }
+    
+    
+    
+    private static void evaluarTipoDeContactoAgregrar(){
         
         switch(valoropcionmenustring)
         {
@@ -170,6 +178,63 @@ public class LibreriaContactosApp {
     
     }
     
+    private static void evaluarTipoDeContactoModificar(){
+        
+        switch(valoropcionmenustring)
+        {
+            case"deportista":
+                nombreamodificar=Mensajes.mostrarDialogoCapturaString("Ingresa el nombre del contacto a actualizar");
+                ModificarDatos.modificarContacto(valoropcionmenustring, nombreamodificar);
+            break;
+            case"doctor":
+                nombreamodificar=Mensajes.mostrarDialogoCapturaString("Ingresa el nombre del contacto a actualizar");
+                ModificarDatos.modificarContacto(valoropcionmenustring, nombreamodificar);
+            
+            break;
+            case"estudiante":
+                nombreamodificar=Mensajes.mostrarDialogoCapturaString("Ingresa el nombre del contacto a actualizar");
+                ModificarDatos.modificarContacto(valoropcionmenustring, nombreamodificar);
+            break;
+            case"licenciado":
+                nombreamodificar=Mensajes.mostrarDialogoCapturaString("Ingresa el nombre del contacto a actualizar");
+                ModificarDatos.modificarContacto(valoropcionmenustring, nombreamodificar);
+            break;
+            case"persona":
+                nombreamodificar=Mensajes.mostrarDialogoCapturaString("Ingresa el nombre del contacto a actualizar");
+                ModificarDatos.modificarContacto(valoropcionmenustring, nombreamodificar);
+            break;
+            default:Mensajes.mostrarDialogo("Dato no existe,Intente de nuevo \n Existentes: deportista, doctor, estudiante, licenciado, persona");
+                break;
+        }
+    }
+    
+    public static void evaluarTipoDeContactoEliminar(){
+        switch(valoropcionmenustring)
+        {
+            case"deportista":
+                EliminarPersona.EliminarPersonaDeportista();
+                mostrarMenuPrincipal();
+            break;
+             case"doctor":
+                EliminarPersona.EliminarPersonaDoctor();
+                mostrarMenuPrincipal();
+            break;
+              case"estudiante":
+                EliminarPersona.EliminarPersonaEstudiante();
+                mostrarMenuPrincipal();
+            break;
+            case"Licenciado":
+                EliminarPersona.EliminarPersonaLicenciado();
+                mostrarMenuPrincipal();
+            break;
+            case"persona":
+                EliminarPersona.EliminarPersona();
+                mostrarMenuPrincipal();
+            break;
+           
+        }
+      
+     }
+    
    
 }
-    
