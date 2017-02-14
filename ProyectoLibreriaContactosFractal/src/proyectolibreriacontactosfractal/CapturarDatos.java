@@ -405,7 +405,7 @@ public class CapturarDatos {
          }
 
     public static void capturarDatosPersona() {
-        
+        //
         //captura los 3 primeros datos de la tabla persona
         capturaDatosContacto("persona");
         //obtiene el valor del campo id del ultimo registro de la tabla
