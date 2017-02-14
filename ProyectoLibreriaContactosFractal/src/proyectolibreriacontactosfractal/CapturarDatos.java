@@ -2,13 +2,17 @@ package proyectolibreriacontactosfractal;
 
 public class CapturarDatos {
     
-   public static Contacto contacto;
-   public static String querycontactos;
-   public static String querymediodecontactos;
-   private static int idMaximo=0;
-   private static boolean bandera=true;
+   public static Contacto contacto;//Objeto para almacenar y obtener los campos de todos los contactos
+   public static String querycontactos;//cadena que guarda el querry para insertar en las tablas de contactos
+   public static String querymediodecontactos;//cadena que guarda el querry para insertar en las tablas de medios de contacto
+   private static int idMaximo=0;// valor que almacena el ultimo id que existe en una tabla
+   private static boolean bandera=true;// auxiliar para repetir el ciclo mientras un campo sea vacio
     
-    private static void capturaDatosContacto(String tipoContacto)
+   
+   /*valida el tipo de contacto que se va a capturar, dependiendo de el tipo inicializa el 
+   objeto contacto como el tipo de la tabla a insertar y captura los campos Nombre, Apellido Paterno y Apellido Materno*/
+   
+   private static void capturaDatosContacto(String tipoContacto)
             
     {
         // se aplica polimorfismo al objeto contacto en base al valor del parametro 
@@ -35,10 +39,14 @@ public class CapturarDatos {
                 break;
         }
         
+        
+        
+        //Cuado de dialodo para la captura el campo Nombre
         contacto.setNombre(Mensajes.mostrarDialogoCapturaString("Ingresa el nombre"));
+        //si el cuadro de dialogo de captura es eliminado termina el proceso y regresa al menu principal
         if(contacto.getNombre()==null)
          LibreriaContactosApp.mostrarMenuPrincipal();
-                 
+        // mientras el campo este vacio renvia el cuadro de dialogo de captura       
         while(validarCadenaVacia(contacto.getNombre()))
         {
             Mensajes.mostrarDialogo("No Puedes dejar este campo vacio");
@@ -46,20 +54,25 @@ public class CapturarDatos {
         }
         
         
+        
+        //Cuado de dialodo para la captura el campo Apellido Paterno
         contacto.setApellidoPaterno(Mensajes.mostrarDialogoCapturaString("Ingresa el Apellido Paterno"));
+        //Si el cuadro de dialogo de captura es eliminado termina el proceso y regresa al menu principal
         if(contacto.getApellidoPaterno()==null)
-        {
-             LibreriaContactosApp.mostrarMenuPrincipal();
-                 
-        }
+        LibreriaContactosApp.mostrarMenuPrincipal();
+        // mientras el campo este vacio renvia el cuadro de dialogo de captura        
         while(validarCadenaVacia(contacto.getApellidoPaterno()))
         {
             Mensajes.mostrarDialogo("No Puedes dejar este campo vacio");
             contacto.setApellidoPaterno(Mensajes.mostrarDialogoCapturaString("Ingresa el nombre"));
         }
         
-        
+        //Cuado de dialodo para la captura el campo Apellido Materno
         contacto.setApellidoMaterno(Mensajes.mostrarDialogoCapturaString("Ingresa el Apellido Materno"));
+        //Si el cuadro de dialogo de captura es eliminado termina el proceso y regresa al menu principal
+        if(contacto.getApellidoMaterno()==null)
+        LibreriaContactosApp.mostrarMenuPrincipal();
+                 
         
         
         
@@ -76,91 +89,170 @@ public class CapturarDatos {
     }
     
    
-    
+    /*Captura los datos restantes de la tabla Deportista */
      public static void capturarDatosDeportista() {
          
+        //captura los 3 primeros datos de la tabla deportista 
         capturaDatosContacto("deportista");
+        //obtiene el valor del campo id del ultimo registro de la tabla
         idMaximo=ContactosABC.verIdMaximo("deportista")+1;
+        //Captura el capo medios de contacto
         capturaMediosContacto("deportista",idMaximo);
-        bandera=true;
         
+        
+        /*Mientras el auxiliar "bandera" sea verdadero se pregunta si se quiere agregar otro medio de contacto,
+        cuando sea falso termina el ciclo*/
+        bandera=true;
         while(bandera)
         {
-        if(Mensajes.mostrarDialogoConfirmacionAgregarOtroMedioDeContacto())
-        {
-            capturaMediosContacto("deportista",idMaximo);
-            bandera=true;
-        }
-        else
-        {
-        bandera=false;
-        }
+            if(Mensajes.mostrarDialogoConfirmacionAgregarOtroMedioDeContacto())
+            {
+                capturaMediosContacto("deportista",idMaximo);
+                bandera=true;
+            }
+            else
+            {
+                bandera=false;
+            }
         }
         
+        //Cuado de dialodo para la captura el campo Genero 
         ((Deportista)contacto).setGenero(Mensajes.mostrarDialogoCapturaString("Ingresa el Genero"));
+        //si el cuadro de dialogo de captura es eliminado termina el proceso y regresa al menu principal
         if(((Deportista)contacto).getGenero()==null)
          LibreriaContactosApp.mostrarMenuPrincipal();
-                 
+        // mientras el campo este vacio renvia el cuadro de dialogo de captura
         while(validarCadenaVacia(((Deportista)contacto).getGenero()))
         {
             Mensajes.mostrarDialogo("No Puedes dejar este campo vacio");
          ((Deportista)contacto).setGenero(Mensajes.mostrarDialogoCapturaString("Ingresa el Genero"));
         }
-        ((Deportista)contacto).setFechaNacimiento(Mensajes.mostrarDialogoCapturaString("Ingresa la fecha de nacimiento"));
-        ((Deportista)contacto).setDeporte(Mensajes.mostrarDialogoCapturaString("Ingresa el Deporte"));
         
+        
+        
+        //Cuado de dialodo para la captura el campo Fecha de Nacimiento
+        ((Deportista)contacto).setFechaNacimiento(Mensajes.mostrarDialogoCapturaString("Ingresa la fecha de nacimiento"));
+        
+        
+        
+        //Cuado de dialodo para la captura el campo Deporte
+        ((Deportista)contacto).setDeporte(Mensajes.mostrarDialogoCapturaString("Ingresa el Deporte"));
+        //si el cuadro de dialogo de captura es eliminado termina el proceso y regresa al menu principal
+        if(((Deportista)contacto).getDeporte()==null)
+        LibreriaContactosApp.mostrarMenuPrincipal();
+        // mientras el campo este vacio renvia el cuadro de dialogo de captura
+        while(validarCadenaVacia(((Deportista)contacto).getDeporte()))
+        {
+            Mensajes.mostrarDialogo("No Puedes dejar este campo vacio");
+         ((Deportista)contacto).setDeporte(Mensajes.mostrarDialogoCapturaString("Ingresa el Deporte"));
+        }
+        //alamacena el query para insertar el contacto
         querycontactos="INSERT INTO deportista(Nombre, ApePa,ApeMa,Genero,FechaNac,Deporte,Profesion)"
                     + " VALUES ('"+contacto.getNombre()+"','"+contacto.getApellidoPaterno()
                 +"','"+contacto.getApellidoMaterno()+"','"+((Deportista)contacto).getGenero()
                 +"','"+((Deportista)contacto).getFechaNacimiento()+"','"
                 +((Deportista)contacto).getDeporte()+"','"+"deportista"+"')";
+        
+        //Ejecuta el query anterior
         ContactosABC.guardarDatosContacto(querycontactos);
         
         
      }
-
-    public static void capturarDatosDoctor() {
-        
+    
+     
+     /*Captura los datos restantes de la tabla Doctor */
+     public static void capturarDatosDoctor() {
+        //captura los 3 primeros datos de la tabla deportista
         capturaDatosContacto("doctor");
-         idMaximo=ContactosABC.verIdMaximo("doctor")+1;
+        //obtiene el valor del campo id del ultimo registro de la tabla
+        idMaximo=ContactosABC.verIdMaximo("doctor")+1;
+        //Captura el capo medios de contacto
         capturaMediosContacto("doctor",idMaximo);
+        
+        
+        /*Mientras el auxiliar "bandera" sea verdadero se pregunta si se quiere agregar otro medio de contacto,
+        cuando sea falso termina el ciclo*/
         bandera=true;
-        
         while(bandera)
-        {
-        if(Mensajes.mostrarDialogoConfirmacionAgregarOtroMedioDeContacto())
-        {
-            capturaMediosContacto("doctor",idMaximo);
-            bandera=true;
-        }
-        else
-        {
-        bandera=false;
-        }
-        }
-        ((Doctor)contacto).setFechaNacimiento(Mensajes.mostrarDialogoCapturaString("Ingresa la fecha de nacimiento"));
-        ((Doctor)contacto).setEspecialidad(Mensajes.mostrarDialogoCapturaString("Ingresa la especialidad"));
-        ((Doctor)contacto).setNombreHospital(Mensajes.mostrarDialogoCapturaString("Ingresa el Nombre del hospital donde ejerce"));
-        ((Doctor)contacto).setDireccionHospital(Mensajes.mostrarDialogoCapturaString("Ingresa la direccion del hospital donde ejerce"));
+            {
+                if(Mensajes.mostrarDialogoConfirmacionAgregarOtroMedioDeContacto())
+                {
+                    capturaMediosContacto("doctor",idMaximo);
+                    bandera=true;
+                }
+                else
+                {
+                    bandera=false;
+                }
+            }
         
-       querycontactos="INSERT INTO doctor(Nombre, ApePa,ApeMa,FechaNac,Especialidad,NombreH,DireccionH,Profesion)"
+        //Cuado de dialodo para la captura el campo Deporte
+        ((Doctor)contacto).setFechaNacimiento(Mensajes.mostrarDialogoCapturaString("Ingresa la fecha de nacimiento"));
+        //si el cuadro de dialogo de captura es eliminado termina el proceso y regresa al menu principal
+        if(((Doctor)contacto).getFechaNacimiento()==null)
+            LibreriaContactosApp.mostrarMenuPrincipal();
+        // mientras el campo este vacio renvia el cuadro de dialogo de captura
+        while(validarCadenaVacia(((Doctor)contacto).getFechaNacimiento()))
+        {
+            Mensajes.mostrarDialogo("No Puedes dejar este campo vacio");
+         ((Doctor)contacto).setFechaNacimiento(Mensajes.mostrarDialogoCapturaString("Ingresa la fecha de nacimiento"));
+        }
+        
+        
+        //Cuado de dialodo para la captura el campo Deporte
+        ((Doctor)contacto).setEspecialidad(Mensajes.mostrarDialogoCapturaString("Ingresa la especialidad"));
+        //si el cuadro de dialogo de captura es eliminado termina el proceso y regresa al menu principal
+        if(((Doctor)contacto).getEspecialidad()==null)
+            LibreriaContactosApp.mostrarMenuPrincipal();
+        // mientras el campo este vacio renvia el cuadro de dialogo de captura
+        while(validarCadenaVacia(((Doctor)contacto).getEspecialidad()))
+        {
+            Mensajes.mostrarDialogo("No Puedes dejar este campo vacio");
+         ((Doctor)contacto).setEspecialidad(Mensajes.mostrarDialogoCapturaString("Ingresa la especialidad"));
+        }
+
+
+
+        //Cuadro de dialodo para la captura el campo Deporte
+        ((Doctor)contacto).setNombreHospital(Mensajes.mostrarDialogoCapturaString("Ingresa el Nombre del hospital donde ejerce"));
+        //si el cuadro de dialogo de captura es eliminado termina el proceso y regresa al menu principal
+        if(((Doctor)contacto).getNombreHospital()==null)
+            LibreriaContactosApp.mostrarMenuPrincipal();
+        //Cuado de dialodo para la captura el campo Deporte  
+        ((Doctor)contacto).setDireccionHospital(Mensajes.mostrarDialogoCapturaString("Ingresa la direccion del hospital donde ejerce"));
+        //si el cuadro de dialogo de captura es eliminado termina el proceso y regresa al menu principal
+        if(((Doctor)contacto).getDireccionHospital()==null)
+            LibreriaContactosApp.mostrarMenuPrincipal();
+        
+
+        //alamacena el query para insertar el contacto
+        querycontactos="INSERT INTO doctor(Nombre, ApePa,ApeMa,FechaNac,Especialidad,NombreH,DireccionH,Profesion)"
                     + " VALUES ('"+contacto.getNombre()+"','"+contacto.getApellidoPaterno()
                 +"','"+contacto.getApellidoMaterno()+"','"+((Doctor)contacto).getFechaNacimiento()
                 +"','"+((Doctor)contacto).getEspecialidad()+"','"+((Doctor)contacto).getNombreHospital()
                 +"','"+((Doctor)contacto).getDireccionHospital()+"','doctor')";
         
-       
+       //Ejecuta el query anterior
         ContactosABC.guardarDatosContacto(querycontactos);
         
         }
+    
+    
+    
 
     public static void capturarDatosEstudiante() {
         
+        //captura los 3 primeros datos de la tabla estudiante
         capturaDatosContacto("estudiante");
+        //obtiene el valor del campo id del ultimo registro de la tabla
         idMaximo=ContactosABC.verIdMaximo("estudiante")+1;
+        //Captura el capo medios de contacto
         capturaMediosContacto("estudiante",idMaximo);
-        bandera=true;
         
+        
+        /*Mientras el auxiliar "bandera" sea verdadero se pregunta si se quiere agregar otro medio de contacto,
+        cuando sea falso termina el ciclo*/
+        bandera=true;
         while(bandera)
         {
         if(Mensajes.mostrarDialogoConfirmacionAgregarOtroMedioDeContacto())
@@ -173,18 +265,59 @@ public class CapturarDatos {
         bandera=false;
         }
         }
-        ((Estudiante)contacto).setEmail(Mensajes.mostrarDialogoCapturaString("Ingresa el Email"));
-        ((Estudiante)contacto).setFechaNacimiento(Mensajes.mostrarDialogoCapturaString("Ingresa la fecha de nacimiento"));
-        ((Estudiante)contacto).setLugarNacimiento(Mensajes.mostrarDialogoCapturaString("Ingresa el lugar de nacimiento"));
-        ((Estudiante)contacto).setEstudiaCarrera(Mensajes.mostrarDialogoCapturaString("Ingresa la carrera que estudia"));
         
+        //Cuadro de dialodo para la captura el campo Email
+        ((Estudiante)contacto).setEmail(Mensajes.mostrarDialogoCapturaString("Ingresa el Email"));
+        //si el cuadro de dialogo de captura es eliminado termina el proceso y regresa al menu principal
+        if(((Estudiante)contacto).getEmail()==null)
+            LibreriaContactosApp.mostrarMenuPrincipal();
+        // mientras el campo este vacio renvia el cuadro de dialogo de captura
+        while(validarCadenaVacia(((Estudiante)contacto).getEmail()))
+        {
+            Mensajes.mostrarDialogo("No Puedes dejar este campo vacio");
+         ((Estudiante)contacto).setEmail(Mensajes.mostrarDialogoCapturaString("Ingresa el Email"));
+        }
+        
+        //Cuadro de dialodo para la captura el campo Fecha de Nacimiento
+        ((Estudiante)contacto).setFechaNacimiento(Mensajes.mostrarDialogoCapturaString("Ingresa la fecha de nacimiento"));
+         //si el cuadro de dialogo de captura es eliminado termina el proceso y regresa al menu principal
+        if(((Estudiante)contacto).getFechaNacimiento()==null)
+            LibreriaContactosApp.mostrarMenuPrincipal();
+        
+        
+        //Cuadro de dialodo para la captura el campo Lugar de Naimiento
+        ((Estudiante)contacto).setLugarNacimiento(Mensajes.mostrarDialogoCapturaString("Ingresa el lugar de nacimiento"));
+        //si el cuadro de dialogo de captura es eliminado termina el proceso y regresa al menu principal
+        if(((Estudiante)contacto).getLugarNacimento()==null)
+            LibreriaContactosApp.mostrarMenuPrincipal();
+        // mientras el campo este vacio renvia el cuadro de dialogo de captura
+        while(validarCadenaVacia(((Estudiante)contacto).getLugarNacimento()))
+        {
+            Mensajes.mostrarDialogo("No Puedes dejar este campo vacio");
+        ((Estudiante)contacto).setLugarNacimiento(Mensajes.mostrarDialogoCapturaString("Ingresa el lugar de nacimiento"));
+        }
+        
+        //Cuadro de dialodo para la captura el campo Lugar de Naimiento
+        ((Estudiante)contacto).setEstudiaCarrera(Mensajes.mostrarDialogoCapturaString("Ingresa la carrera que estudia"));
+        //si el cuadro de dialogo de captura es eliminado termina el proceso y regresa al menu principal
+        if(((Estudiante)contacto).getEstudiaCarrera()==null)
+            LibreriaContactosApp.mostrarMenuPrincipal();
+        // mientras el campo este vacio renvia el cuadro de dialogo de captura
+        while(validarCadenaVacia(((Estudiante)contacto).getEstudiaCarrera()))
+        {
+            Mensajes.mostrarDialogo("No Puedes dejar este campo vacio");
+        ((Estudiante)contacto).setEstudiaCarrera(Mensajes.mostrarDialogoCapturaString("Ingresa la carrera que estudia"));
+        }
+
+
+        //alamacena el query para insertar el contacto
         querycontactos="INSERT INTO estudiante(Nombre,ApePa,ApeMa,LugarNac,FechaNac,Carrera,Email,Profesion)"
                     + " VALUES ('"+contacto.getNombre()+"','"+contacto.getApellidoPaterno()
                 +"','"+contacto.getApellidoMaterno()+"','"+((Estudiante)contacto).getLugarNacimento()
                 +"','"+((Estudiante)contacto).getFechaNacimiento()+"','"
                 +((Estudiante)contacto).getEstudiaCarrera()+"','"+((Estudiante)contacto).getEmail()+"','estudiante')";
         
-       
+       //Ejecuta el query anterior
         ContactosABC.guardarDatosContacto(querycontactos);
        
         
@@ -192,11 +325,17 @@ public class CapturarDatos {
 
     public static void capturarDatosLicenciado() {
         
+        //captura los 3 primeros datos de la tabla licenciado
         capturaDatosContacto("licenciado");
+        //obtiene el valor del campo id del ultimo registro de la tabla
         idMaximo=ContactosABC.verIdMaximo("licenciado")+1;
+        //Captura el capo medios de contacto
         capturaMediosContacto("licenciado",idMaximo);
-        bandera=true;
         
+        
+        /*Mientras el auxiliar "bandera" sea verdadero se pregunta si se quiere agregar otro medio de contacto,
+        cuando sea falso termina el ciclo*/
+        bandera=true;
         while(bandera)
         {
         if(Mensajes.mostrarDialogoConfirmacionAgregarOtroMedioDeContacto())
@@ -209,10 +348,50 @@ public class CapturarDatos {
         bandera=false;
         }
         }
+        
+        //Cuadro de dialodo para la captura el campo Telefono Oficina
         ((Licenciado)contacto).setTelefonoOficina(Mensajes.mostrarDialogoCapturaString("Ingresa el Telefono de oficina"));
+        //si el cuadro de dialogo de captura es eliminado termina el proceso y regresa al menu principal
+        if(((Licenciado)contacto).getTelefonoOficina()==null)
+            LibreriaContactosApp.mostrarMenuPrincipal();
+        // mientras el campo este vacio renvia el cuadro de dialogo de captura
+        while(validarCadenaVacia(((Licenciado)contacto).getTelefonoOficina()))
+        {
+            Mensajes.mostrarDialogo("No Puedes dejar este campo vacio");
+        ((Licenciado)contacto).setTelefonoOficina(Mensajes.mostrarDialogoCapturaString("Ingresa el Telefono de oficina"));
+        
+        }
+        
+        
+        
+        //Cuadro de dialodo para la captura el campo Horario de Inicio
         ((Licenciado)contacto).setHorarioAtencionInicio(Mensajes.mostrarDialogoCapturaString("Ingresa el horario de inicio"));
+        //si el cuadro de dialogo de captura es eliminado termina el proceso y regresa al menu principal
+        if(((Licenciado)contacto).getHorarioAtencionInicio()==null)
+            LibreriaContactosApp.mostrarMenuPrincipal();
+        // mientras el campo este vacio renvia el cuadro de dialogo de captura
+        while(validarCadenaVacia(((Licenciado)contacto).getHorarioAtencionInicio()))
+        {
+            Mensajes.mostrarDialogo("No Puedes dejar este campo vacio");
+        ((Licenciado)contacto).setHorarioAtencionInicio(Mensajes.mostrarDialogoCapturaString("Ingresa el horario de inicio"));
+        
+        }
+
+
+        //Cuadro de dialodo para la captura el campo Horario de Fin
+        ((Licenciado)contacto).setHorarioAtencionFin(Mensajes.mostrarDialogoCapturaString("Ingresa el horario de fin"));
+        //si el cuadro de dialogo de captura es eliminado termina el proceso y regresa al menu principal
+        if(((Licenciado)contacto).getHorarioAtencionFin()==null)
+            LibreriaContactosApp.mostrarMenuPrincipal();
+        // mientras el campo este vacio renvia el cuadro de dialogo de captura
+        while(validarCadenaVacia(((Licenciado)contacto).getHorarioAtencionFin()))
+        {
+            Mensajes.mostrarDialogo("No Puedes dejar este campo vacio");
         ((Licenciado)contacto).setHorarioAtencionFin(Mensajes.mostrarDialogoCapturaString("Ingresa el horario de fin"));
         
+        }
+        
+        //alamacena el query para insertar el contacto
         querycontactos="INSERT INTO "+"licenciado"
                 +"(Nombre, ApePa,ApeMa,TelOficina,HorarioIn,HorarioFin,Profesion)"
                     + " VALUES ('"+contacto.getNombre()+"','"+contacto.getApellidoPaterno()
@@ -220,16 +399,23 @@ public class CapturarDatos {
                 +"','"+((Licenciado)contacto).getHorarioAtencionInicio()+"','"
                 +((Licenciado)contacto).getHorarioAtencionFin()+"','"+"licenciado"+"')";
         
-        
+        //Ejecuta el query anterior
         ContactosABC.guardarDatosContacto(querycontactos);
         
          }
 
     public static void capturarDatosPersona() {
         
+        //captura los 3 primeros datos de la tabla persona
         capturaDatosContacto("persona");
+        //obtiene el valor del campo id del ultimo registro de la tabla
         idMaximo=ContactosABC.verIdMaximo("persona")+1;
+        //Captura el capo medios de contacto
         capturaMediosContacto("persona",idMaximo);
+        
+        
+        /*Mientras el auxiliar "bandera" sea verdadero se pregunta si se quiere agregar otro medio de contacto,
+        cuando sea falso termina el ciclo*/
         bandera=true;
         
         while(bandera)
@@ -245,11 +431,46 @@ public class CapturarDatos {
         }
         }
         
+        
+        //Cuadro de dialodo para la captura el campo Domicilio
         ((Persona)contacto).setDomicilio(Mensajes.mostrarDialogoCapturaString("Ingresa el Domicilio"));
+        //si el cuadro de dialogo de captura es eliminado termina el proceso y regresa al menu principal
+        if(((Persona)contacto).getDomicilio()==null)
+            LibreriaContactosApp.mostrarMenuPrincipal();
+        // mientras el campo este vacio renvia el cuadro de dialogo de captura
+        while(validarCadenaVacia(((Persona)contacto).getDomicilio()))
+        {
+            Mensajes.mostrarDialogo("No Puedes dejar este campo vacio");
+        ((Persona)contacto).setDomicilio(Mensajes.mostrarDialogoCapturaString("Ingresa el Domicilio"));
+        
+        }
+
+
+
+
+        //Cuadro de dialodo para la captura el campo Medio de Contacto preferido
         ((Persona)contacto).setContactoPreferido(Mensajes.mostrarDialogoCapturaString("Ingresa el medio de contacto favorito"));
+        //si el cuadro de dialogo de captura es eliminado termina el proceso y regresa al menu principal
+        if(((Persona)contacto).getContactoPreferido()==null)
+            LibreriaContactosApp.mostrarMenuPrincipal();
+        
+
+
+        //Cuadro de dialodo para la captura el campo Ocupacion
+        ((Persona)contacto).setOcupacion(Mensajes.mostrarDialogoCapturaString("Ingresa la ocupacion"));
+        //si el cuadro de dialogo de captura es eliminado termina el proceso y regresa al menu principal
+        if(((Persona)contacto).getOcupacion()==null)
+            LibreriaContactosApp.mostrarMenuPrincipal();
+        // mientras el campo este vacio renvia el cuadro de dialogo de captura
+        while(validarCadenaVacia(((Persona)contacto).getOcupacion()))
+        {
+            Mensajes.mostrarDialogo("No Puedes dejar este campo vacio");
         ((Persona)contacto).setOcupacion(Mensajes.mostrarDialogoCapturaString("Ingresa la ocupacion"));
         
-         querycontactos="INSERT INTO persona(Nombre,Apepa,ApeMa,Domicilio,MedioPreferido,Ocupacion,Profesion)"
+        }
+        
+                //alamacena el query para insertar el contacto
+        querycontactos="INSERT INTO persona(Nombre,Apepa,ApeMa,Domicilio,MedioPreferido,Ocupacion,Profesion)"
                     + " VALUES ('"+contacto.getNombre()+"','"+contacto.getApellidoPaterno()
                 +"','"+contacto.getApellidoMaterno()+"','"+((Persona)contacto).getDomicilio()
                 +"','"+((Persona)contacto).getContactoPreferido()+"','"
@@ -263,13 +484,15 @@ public class CapturarDatos {
     
      public static void capturaMediosContacto(String tabla,int valorid){
     
-    contacto.setMedioContacto(Mensajes.mostrarDialogoCapturaString("Ingresa un medio de contacto, puede ser:"
-                +"\n"+"Telefono Celular, Telefono de Casa, Email "));
+        contacto.setMedioContacto(Mensajes.mostrarDialogoCapturaString("Ingresa un medio de contacto, puede ser:"
+                +"\n"+"Telefono Celular, Telefono de Casa, Email, Etc "));
+        if(contacto.getMedioContacto()==null)
+            LibreriaContactosApp.mostrarMenuPrincipal();
         
         querymediodecontactos="INSERT INTO contacto(`idPersona`, `Profesion`, `Contactos`)"
                 + " VALUES ("+valorid+",'"+tabla+"','"+contacto.getMedioContacto()+"')";
         ContactosABC.guardarDatosContacto(querymediodecontactos);
-}
+    }
     
     
    
