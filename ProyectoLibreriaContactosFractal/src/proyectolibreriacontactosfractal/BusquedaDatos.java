@@ -260,7 +260,7 @@ public class BusquedaDatos {
         contacto=new Deportista();  
 	try{
             //--------Contador---------
-            PreparedStatement consultacontador;
+            PreparedStatement consultacontador,consultapuntero;
             consultacontador = conexion.getConnection().prepareStatement("select count(*) from Deportista");
             ResultSet resultadoquerycontador = consultacontador.executeQuery();
             resultadoquerycontador.beforeFirst(); 
@@ -268,8 +268,15 @@ public class BusquedaDatos {
             int NR = resultadoquerycontador.getInt ("count(*)");
             //--------------------------
             for(int j=1;j<=NR;j++){
+                //Consultar id de la persona para el barrido de los datos
+                consultapuntero = conexion.getConnection().prepareStatement("SELECT IdPersona from Deportista Limit "+(j-1)+","+j+"");
+                resultadoquerycontador = consultapuntero.executeQuery();
+                resultadoquerycontador.beforeFirst(); 
+                resultadoquerycontador.next();
+                int NPuntero = resultadoquerycontador.getInt ("IdPersona");
+                //--------------------------------------------------------
                 PreparedStatement consulta;
-                consulta = conexion.getConnection().prepareStatement("SELECT Nombre, ApePa, ApeMa,IdPersona,Genero,FechaNac,Deporte FROM Deportista where IdPersona='"+j+"' ");
+                consulta = conexion.getConnection().prepareStatement("SELECT Nombre, ApePa, ApeMa,IdPersona,Genero,FechaNac,Deporte FROM Deportista where IdPersona="+NPuntero+"");
                 ResultSet resultadoquery = consulta.executeQuery();
                 while(resultadoquery.next()){
                     contacto.setNombre(resultadoquery.getString("Nombre"));
@@ -308,7 +315,7 @@ public class BusquedaDatos {
         contacto=new Doctor();  
 	try{
             //--------Contador---------
-            PreparedStatement consultacontador;
+            PreparedStatement consultacontador,consultapuntero;
             consultacontador = conexion.getConnection().prepareStatement("select count(*) from Doctor");
             ResultSet resultadoquerycontador = consultacontador.executeQuery();
             resultadoquerycontador.beforeFirst(); 
@@ -316,8 +323,15 @@ public class BusquedaDatos {
             int NR = resultadoquerycontador.getInt ("count(*)");
             //--------------------------
             for(int j=1;j<=NR;j++){
+                //Consultar id de la persona para el barrido de los datos
+                consultapuntero = conexion.getConnection().prepareStatement("SELECT IdPersona from Doctor Limit "+(j-1)+","+j+"");
+                resultadoquerycontador = consultapuntero.executeQuery();
+                resultadoquerycontador.beforeFirst(); 
+                resultadoquerycontador.next();
+                int NPuntero = resultadoquerycontador.getInt ("IdPersona");
+                //--------------------------------------------------------
                 PreparedStatement consulta;
-                consulta = conexion.getConnection().prepareStatement("SELECT Nombre, ApePa, ApeMa,IdPersona,FechaNac,Especialidad,NombreH,DireccionH FROM Doctor where IdPersona='"+j+"' ");
+                consulta = conexion.getConnection().prepareStatement("SELECT Nombre, ApePa, ApeMa,IdPersona,FechaNac,Especialidad,NombreH,DireccionH FROM Doctor where IdPersona='"+NPuntero+"' ");
                 ResultSet resultadoquery = consulta.executeQuery();
                 while(resultadoquery.next()){
                 contacto.setNombre(resultadoquery.getString("Nombre"));
@@ -357,7 +371,7 @@ public class BusquedaDatos {
         contacto=new Estudiante();  
 	try{
             //--------Contador---------
-            PreparedStatement consultacontador;
+            PreparedStatement consultacontador,consultapuntero;
             consultacontador = conexion.getConnection().prepareStatement("select count(*) from Estudiante");
             ResultSet resultadoquerycontador = consultacontador.executeQuery();
             resultadoquerycontador.beforeFirst(); 
@@ -365,8 +379,15 @@ public class BusquedaDatos {
             int NR = resultadoquerycontador.getInt ("count(*)");
             //--------------------------
             for(int j=1;j<=NR;j++){
+                //Consultar id de la persona para el barrido de los datos
+                consultapuntero = conexion.getConnection().prepareStatement("SELECT IdPersona from Estudiante Limit "+(j-1)+","+j+"");
+                resultadoquerycontador = consultapuntero.executeQuery();
+                resultadoquerycontador.beforeFirst(); 
+                resultadoquerycontador.next();
+                int NPuntero = resultadoquerycontador.getInt ("IdPersona");
+                //--------------------------------------------------------
                 PreparedStatement consulta;
-                consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,IdPersona,LugarNac,FechaNac,Carrera,Email from Estudiante WHERE IdPersona='"+j+"' ");
+                consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,IdPersona,LugarNac,FechaNac,Carrera,Email from Estudiante WHERE IdPersona='"+NPuntero+"' ");
                 ResultSet resultadoquery = consulta.executeQuery();
             while(resultadoquery.next()){
                 contacto.setNombre(resultadoquery.getString("Nombre"));
@@ -406,7 +427,7 @@ public class BusquedaDatos {
         contacto=new Licenciado();  
 	try{
             //--------Contador---------
-            PreparedStatement consultacontador;
+            PreparedStatement consultacontador,consultapuntero;
             consultacontador = conexion.getConnection().prepareStatement("select count(*) from Licenciado");
             ResultSet resultadoquerycontador = consultacontador.executeQuery();
             resultadoquerycontador.beforeFirst(); 
@@ -414,8 +435,15 @@ public class BusquedaDatos {
             int NR = resultadoquerycontador.getInt ("count(*)");
             //--------------------------
             for(int j=1;j<=NR;j++){
+                //Consultar id de la persona para el barrido de los datos
+                consultapuntero = conexion.getConnection().prepareStatement("SELECT IdPersona from Licenciado Limit "+(j-1)+","+j+"");
+                resultadoquerycontador = consultapuntero.executeQuery();
+                resultadoquerycontador.beforeFirst(); 
+                resultadoquerycontador.next();
+                int NPuntero = resultadoquerycontador.getInt ("IdPersona");
+                //--------------------------------------------------------
                 PreparedStatement consulta;
-            consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,IdPersona,TelOficina,HorarioIn,HorarioFin from Licenciado WHERE IdPersona='"+j+"' ");
+            consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,IdPersona,TelOficina,HorarioIn,HorarioFin from Licenciado WHERE IdPersona='"+NPuntero+"' ");
             ResultSet resultadoquery = consulta.executeQuery();
             while(resultadoquery.next()){
                 contacto.setNombre(resultadoquery.getString("Nombre"));
@@ -453,7 +481,7 @@ public class BusquedaDatos {
         contacto=new Persona();  
 	try{
             //--------Contador---------
-            PreparedStatement consultacontador;
+            PreparedStatement consultacontador,consultapuntero;
             consultacontador = conexion.getConnection().prepareStatement("select count(*) from Persona");
             ResultSet resultadoquerycontador = consultacontador.executeQuery();
             resultadoquerycontador.beforeFirst(); 
@@ -461,8 +489,15 @@ public class BusquedaDatos {
             int NR = resultadoquerycontador.getInt ("count(*)");
             //--------------------------
             for(int j=1;j<=NR;j++){
+                //Consultar id de la persona para el barrido de los datos
+                consultapuntero = conexion.getConnection().prepareStatement("SELECT IdPersona from Persona Limit "+(j-1)+","+j+"");
+                resultadoquerycontador = consultapuntero.executeQuery();
+                resultadoquerycontador.beforeFirst(); 
+                resultadoquerycontador.next();
+                int NPuntero = resultadoquerycontador.getInt ("IdPersona");
+                //--------------------------------------------------------
                 PreparedStatement consulta;
-                consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,IdPersona,Domicilio,MedioPreferido,Ocupacion from Persona WHERE IdPersona='"+j+"' ");
+                consulta = conexion.getConnection().prepareStatement("SELECT Nombre,ApePa,ApeMa,IdPersona,Domicilio,MedioPreferido,Ocupacion from Persona WHERE IdPersona='"+NPuntero+"' ");
                 ResultSet resultadoquery = consulta.executeQuery();
             while(resultadoquery.next()){
                 contacto.setNombre(resultadoquery.getString("Nombre"));
